@@ -7,7 +7,7 @@ open.c
 ### Open a file
 open.c    
 
-	int sys_open(const char * filename,int flag,int mode)
+	int sys_open(const char * filename,int flag,int mode) // P634
 		# Find an empty file struction point for current progcess, return the index as handle
 		# Set the close_on_exec
 		# Find an empty file structioon in the file table
