@@ -138,12 +138,12 @@ int sys_chown(const char * filename,int uid,int gid)
 int sys_open(const char * filename,int flag,int mode)
 {
 	char w[100];
-	if (filename!=NULL)        
+	/*if (filename!=NULL)        
 	{    
 		strcpy(w,filename);
 		w[100]='\0';
 		log("sys_open%s\n",w);
-	}
+	}*/
 	struct m_inode * inode;
 	struct file * f;
 	int i,fd;
