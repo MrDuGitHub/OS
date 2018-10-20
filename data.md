@@ -1,3 +1,5 @@
+## File system
+
 ### Create a file
 
 open.c    
@@ -19,6 +21,20 @@ namei.c
 **the new inode**
 
 ### Write file
+read_write.c
 
+    sys_write(unsigned int fd,char * buf,int count) // P626
+file_dev.c  
+
+    	file_write(inode,file,buf,count);	// P616
   
-<font color="#dd0000" size=5>**TO DO**</font> 
+**data block**  
+**pos pointer**  
+
+### Close file
+open.c  
+
+    sys_close(unsigned int fd);  //P636
+**file structure**
+
+<font color="#dd0000" size=5>**The basic module as above.**</font> 

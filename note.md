@@ -28,15 +28,15 @@ namei.c
 ### Write file
 read_write.c
 
-    sys_write(unsigned int fd,char * buf,int count) // P619
+    sys_write(unsigned int fd,char * buf,int count) // P626
 file_dev.c  
 
-    	file_write(inode,file,buf,count);	// P608
+    	file_write(inode,file,buf,count);	// P616
 
 ### Close the file
 open.c  
 
-    sys_close(unsigned int fd);
+    sys_close(unsigned int fd);  //P636
 		iput(filp->f_inode);
 
 
