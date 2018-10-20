@@ -13,14 +13,12 @@ open.c
 		# Find an empty file structioon in the file table
 namei.c  
 
-    	open_namei(filename,flag,mode,&inode)); // P591
+    	open_namei(filename,flag,mode,&inode));      // P598
 			# Find the inode of the file specified by filename
-			dir_namei(pathname,&namelen,&basename); // P589
-				get_dir(pathname);
-open.c
-
+			dir_namei(pathname,&namelen,&basename);  // P596
+				get_dir(pathname);                   // P594
 			# Find the file in this dir
-			find_entry(&dir,basename,namelen,&de);
+			find_entry(&dir,basename,namelen,&de);   // P598
 			# If this is a create operation, apply for a new inode and add it under the dir
 				new_inode(dir->i_dev); // bitmap.c
 				add_entry(dir,basename,namelen,&de); // P585
