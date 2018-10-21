@@ -51,7 +51,7 @@ hd.c
 
 			sys_setup(void * BIOS)
 					rd_load(); // ramdisk.c Virtual disk
-super.c // P576
+super.c 
 
-					mount_root(); 
+					mount_root(); // P583
 
