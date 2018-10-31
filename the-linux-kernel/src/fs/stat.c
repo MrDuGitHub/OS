@@ -44,6 +44,17 @@ int sys_stat(char * filename, struct stat * statbuf)
 	return 0;
 }
 
+int sys_lstat(char * filename, struct stat * statbuf)
+{
+	struct m_inode * inode;
+
+	if (!(inode = lnamei(filename)))
+		return -ENOENT;
+	cp_stat(inode,statbuf);
+	iput(inode);
+	return 0;
+}
+
 int sys_fstat(unsigned int fd, struct stat * statbuf)
 {
 	struct file * f;

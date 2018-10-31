@@ -137,13 +137,18 @@ int sys_chown(const char * filename,int uid,int gid)
 
 int sys_open(const char * filename,int flag,int mode)
 {
-	char w[100];
-	/*if (filename!=NULL)        
+	/*char w[100];
+	if (filename!=NULL)        
 	{    
-		strcpy(w,filename);
-		w[100]='\0';
-		log("sys_open%s\n",w);
+		for (int i=0;i<5;i++)
+		if (filename[i]>0&&filename[i]<128)	
+			log("%c",filename[i]);
+		else
+			log(" ");
+		log("\n");
 	}*/
+	//if (filename[0]=="t"||filename[0]=="/")
+	//log("sys_open%s\n",filename);
 	struct m_inode * inode;
 	struct file * f;
 	int i,fd;
@@ -161,6 +166,9 @@ int sys_open(const char * filename,int flag,int mode)
 	if (i>=NR_FILE)
 		return -EINVAL;
 	(current->filp[fd]=f)->f_count++;
+	log("fd=%d\n",fd);
+	log("close_on_exec=%d\n",current->close_on_exec);
+	log("The first empty file_table is %dth\n",i);
 	if ((i=open_namei(filename,flag,mode,&inode))<0) {
 		current->filp[fd]=NULL;
 		f->f_count=0;
