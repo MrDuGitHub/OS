@@ -436,8 +436,9 @@ int open_namei(const char * pathname, int flag, int mode,
 		if (namelen==3)
 		{for (int i=0;i<3;i++)
 			x[i]=(int)basename[i];
-		log("this one\n");
-		}else log("not this one\n");
+		log("{\"this one!\":1}\n");
+		//log("%c",basename[0]);
+		}//else log("not this one\n");
 		if (!(flag & O_CREAT)) {
 			iput(dir);
 			return -ENOENT;
