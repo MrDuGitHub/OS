@@ -20,6 +20,9 @@
 
 #define ACC_MODE(x) ("\004\002\006\377"[(x)&O_ACCMODE])
 
+static struct m_inode * _namei(const char * filename, struct m_inode * base,
+	int follow_links);
+
 /*
  * comment out this line if you want names > NAME_LEN chars to be
  * truncated. Else they will be disallowed.
@@ -219,6 +222,38 @@ static struct buffer_head * add_entry(struct m_inode * dir,
 	return NULL;
 }
 
+static struct m_inode * follow_link(struct m_inode * dir, struct m_inode * inode)
+{
+	unsigned short fs;
+	struct buffer_head * bh;
+
+	if (!dir) {
+		dir = current->root;
+		dir->i_count++;
+	}
+	if (!inode) {
+		iput(dir);
+		return NULL;
+	}
+	if (!S_ISLNK(inode->i_mode)) {
+		iput(dir);
+		return inode;
+	}
+	__asm__("mov %%fs,%0":"=r" (fs));
+	if (fs != 0x17 || !inode->i_zone[0] ||
+	   !(bh = bread(inode->i_dev, inode->i_zone[0]))) {
+		iput(dir);
+		iput(inode);
+		return NULL;
+	}
+	iput(inode);
+	__asm__("mov %0,%%fs"::"r" ((unsigned short) 0x10));
+	inode = _namei(bh->b_data,dir,0);
+	__asm__("mov %0,%%fs"::"r" (fs));
+	brelse(bh);
+	return inode;
+}
+
 /*
  *	get_dir()
  *
@@ -293,6 +328,44 @@ static struct m_inode * dir_namei(const char * pathname,
 	return dir;
 }
 
+struct m_inode * _namei(const char * pathname, struct m_inode * base,
+	int follow_links)
+{
+	const char * basename;
+	int inr,namelen;
+	struct m_inode * inode;
+	struct buffer_head * bh;
+	struct dir_entry * de;
+
+	if (!(base = dir_namei(pathname,&namelen,&basename)))
+		return NULL;
+	if (!namelen)			/* special case: '/usr/' etc */
+		return base;
+	bh = find_entry(&base,basename,namelen,&de);
+	if (!bh) {
+		iput(base);
+		return NULL;
+	}
+	inr = de->inode;
+	brelse(bh);
+	if (!(inode = iget(base->i_dev,inr))) {
+		iput(base);
+		return NULL;
+	}
+	if (follow_links)
+		inode = follow_link(base,inode);
+	else
+		iput(base);
+	inode->i_atime=CURRENT_TIME;
+	inode->i_dirt=1;
+	return inode;
+}
+
+struct m_inode * lnamei(const char * pathname)
+{
+	return _namei(pathname, NULL, 0);
+}
+
 /*
  *	namei()
  *
@@ -359,6 +432,13 @@ int open_namei(const char * pathname, int flag, int mode,
 	}
 	bh = find_entry(&dir,basename,namelen,&de);
 	if (!bh) {
+		int x[3];
+		if (namelen==3)
+		{for (int i=0;i<3;i++)
+			x[i]=(int)basename[i];
+		log("{\"this one!\":1}\n");
+		//log("%c",basename[0]);
+		}//else log("not this one\n");
 		if (!(flag & O_CREAT)) {
 			iput(dir);
 			return -ENOENT;
