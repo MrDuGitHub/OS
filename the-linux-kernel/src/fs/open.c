@@ -137,6 +137,18 @@ int sys_chown(const char * filename,int uid,int gid)
 
 int sys_open(const char * filename,int flag,int mode)
 {
+	int in=0;
+	char name[50];
+	name[0]=get_fs_byte(filename);
+	while (get_fs_byte(filename+in)!='\0')
+	{
+		//log("%c",get_fs_byte(filename+in));
+		in++;
+		name[in]=get_fs_byte(filename+in);		
+	}
+	//	log("{\"module\":\"file_system\",\"file\":\"%s\",\"function\":\"sys_open\",\"line\":%d,\"provider\":\"Mr.d\",\"time\":%d,\n \"data\":{\"filename\":\"%s\",\"flag\":%d}}\n",__FILE__,__LINE__,jiffies,name,flag);	
+	
+	//log("%s\n",name);
 	struct m_inode * inode;
 	struct file * f;
 	int i,fd;
@@ -153,15 +165,15 @@ int sys_open(const char * filename,int flag,int mode)
 	if (i>=NR_FILE)
 		return -EINVAL;
 	(current->filp[fd]=f)->f_count++;
-	log("{\"module\":\"file_system\",\"file\":\"open.c\",\"function\":\"sys_open\",\"line\":156,\"provider\":\"Mr.d\",\"time\":%d,\"data\":{\"fd\":%d,\"close_on_exec\":%d,\"file_table\":%d}}\n",jiffies,fd,current->close_on_exec,i);	
-/*	log("fd=%d\n",fd);
-	log("close_on_exec=%d\n",current->close_on_exec);
-	log("The first empty file_table is %dth\n",i);
-*/	if ((i=open_namei(filename,flag,mode,&inode))<0) {
+	log("{\"module\":\"file_system\",\"file\":\"%s\",\"function\":\"sys_open\",\"line\":%d,\"provider\":\"Mr.d\",\"time\":%d,\n \"data\":{\"filename\":\"%s\",\"fd\":%d,\"close_on_exec\":%d,\"file_table\":%d}}\n",__FILE__,__LINE__,jiffies,name,fd,current->close_on_exec,i);	
+	
+	if ((i=open_namei(filename,flag,mode,&inode))<0) {
 		current->filp[fd]=NULL;
 		f->f_count=0;
 		return i;
 	}
+log("{\"module\":\"file_system\",\"file\":\"%s\",\"function\":\"sys_open\",\"line\":%d,\"provider\":\"Mr.d\",\"time\":%d,\n \"data\":{\"filename\":\"%s\",\"Event\":\"Open finished and i<0\"}}\n",__FILE__,__LINE__,jiffies,name);	
+	
 /* ttys are somewhat special (ttyxx major==4, tty major==5) */
 	if (S_ISCHR(inode->i_mode)) {
 		if (MAJOR(inode->i_zone[0])==4) {
@@ -199,6 +211,8 @@ int sys_creat(const char * pathname, int mode)
 	}*/
 	//else
 	//  log("NULL!\n");		
+	//log("{\"module\":\"file_system\",\"file\":\"%s\",\"function\":\"sys_creat\",\"line\":%d,\"provider\":\"Mr.d\",\"time\":%d,\n \"data\":{\"flag\":%d}}\n",__FILE__,__LINE__,jiffies,O_CREAT | O_TRUNC);	
+	
 	return sys_open(pathname, O_CREAT | O_TRUNC, mode);
 }
 

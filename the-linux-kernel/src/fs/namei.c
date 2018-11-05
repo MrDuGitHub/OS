@@ -108,6 +108,9 @@ static struct buffer_head * find_entry(struct m_inode ** dir,
 		namelen = NAME_LEN;
 #endif
 	entries = (*dir)->i_size / (sizeof (struct dir_entry));
+	
+	log("{\"module\":\"file_system\",\"file\":\"%s\",\"function\":\"find_entry\",\"line\":%d,\"provider\":\"Mr.d\",\"time\":%d,\n \"data\":{\"m_inode\":\"%x\",\"i_size\":%d}}\n",__FILE__,__LINE__,jiffies,*dir,(*dir)->i_size);
+
 	*res_dir = NULL;
 	if (!namelen)
 		return NULL;
@@ -128,7 +131,9 @@ static struct buffer_head * find_entry(struct m_inode ** dir,
 		}
 	}
 	if (!(block = (*dir)->i_zone[0]))
-		return NULL;
+		return NULL;	
+	log("{\"module\":\"file_system\",\"file\":\"%s\",\"function\":\"find_entry\",\"line\":%d,\"provider\":\"Mr.d\",\"time\":%d,\n \"data\":{\"m_inode\":\"%x\",\"i_zone[0]\":%x}}\n",__FILE__,__LINE__,jiffies,*dir,(*dir)->i_zone[0]);
+
 	if (!(bh = bread((*dir)->i_dev,block)))
 		return NULL;
 	i = 0;
@@ -144,6 +149,20 @@ static struct buffer_head * find_entry(struct m_inode ** dir,
 			}
 			de = (struct dir_entry *) bh->b_data;
 		}
+		char c[50];int index=0;
+		for (int i=0;i<20;i++)			
+		//while(1)
+		{	
+			c[index]=de->name[index];
+			if (c[index]<=0||c[index]>128) {c[index]=0;break;}
+			index++;
+			//i++;
+		}//
+		//if (c[index]!='\0') log("fuck");
+		//c[10]='\0';
+	//	log("%s\n",c);
+	log("{\"module\":\"file_system\",\"file\":\"%s\",\"function\":\"find_entry\",\"line\":%d,\"provider\":\"Mr.d\",\"time\":%d,\n \"data\":{\"dir_entry[%d]\":\"%s\"}}\n",__FILE__,__LINE__,jiffies,i,c);
+
 		if (match(namelen,name,de)) {
 			*res_dir = de;
 			return bh;
@@ -192,16 +211,22 @@ static struct buffer_head * add_entry(struct m_inode * dir,
 		if ((char *)de >= BLOCK_SIZE+bh->b_data) {
 			brelse(bh);
 			bh = NULL;
+		log("{\"module\":\"file_system\",\"file\":\"%s\",\"function\":\"add_entry\",\"line\":%d,\"provider\":\"Mr.d\",\"time\":%d,\n \"data\":{\"Event\":\"Create another block\"}}\n",__FILE__,__LINE__,jiffies);
+
 			block = create_block(dir,i/DIR_ENTRIES_PER_BLOCK);
 			if (!block)
 				return NULL;
 			if (!(bh = bread(dir->i_dev,block))) {
+
+		log("{\"module\":\"file_system\",\"file\":\"%s\",\"function\":\"add_entry\",\"line\":%d,\"provider\":\"Mr.d\",\"time\":%d,\n \"data\":{\"Event\":\"Empty block\"}}\n",__FILE__,__LINE__,jiffies);
 				i += DIR_ENTRIES_PER_BLOCK;
 				continue;
 			}
 			de = (struct dir_entry *) bh->b_data;
 		}
 		if (i*sizeof(struct dir_entry) >= dir->i_size) {
+
+		log("{\"module\":\"file_system\",\"file\":\"%s\",\"function\":\"add_entry\",\"line\":%d,\"provider\":\"Mr.d\",\"time\":%d,\n \"data\":{\"Event\":\"New entry\"}}\n",__FILE__,__LINE__,jiffies);
 			de->inode=0;
 			dir->i_size = (i+1)*sizeof(struct dir_entry);
 			dir->i_dirt = 1;
@@ -213,6 +238,7 @@ static struct buffer_head * add_entry(struct m_inode * dir,
 				de->name[i]=(i<namelen)?get_fs_byte(name+i):0;
 			bh->b_dirt = 1;
 			*res_dir = de;
+		log("{\"module\":\"file_system\",\"file\":\"%s\",\"function\":\"add_entry\",\"line\":%d,\"provider\":\"Mr.d\",\"time\":%d,\n \"data\":{\"Empty emtry\":%d,\"de->name\":\"%s\"}}\n",__FILE__,__LINE__,jiffies,i,de->name);
 			return bh;
 		}
 		de++;
@@ -277,24 +303,30 @@ static struct m_inode * get_dir(const char * pathname)
 		inode = current->root;
 		pathname++;
 	} else if (c)
-		inode = current->pwd;
+		{	
+			inode = current->pwd;
+			log("{\"module\":\"file_system\",\"file\":\"%s\",\"function\":\"get_dir\",\"line\":%d,\"provider\":\"Mr.d\",\"time\":%d,\n \"data\":{\"pwd\":\"%x\",\"i_count\":%d}}\n",__FILE__,__LINE__,jiffies,current->pwd,current->pwd->i_count);	
+
+		}
 	else
 		return NULL;	/* empty name is bad */
 	inode->i_count++;
 	while (1) {
 		thisname = pathname;
 		if (!S_ISDIR(inode->i_mode) || !permission(inode,MAY_EXEC)) {
-			iput(inode);
+			iput(inode);		
 			return NULL;
-		}
+		}		
 		for(namelen=0;(c=get_fs_byte(pathname++))&&(c!='/');namelen++)
 			/* nothing */ ;
 		if (!c)
-			return inode;
+			return inode;		
 		if (!(bh = find_entry(&inode,thisname,namelen,&de))) {
 			iput(inode);
+		
 			return NULL;
 		}
+		
 		inr = de->inode;
 		idev = inode->i_dev;
 		brelse(bh);
@@ -422,6 +454,7 @@ int open_namei(const char * pathname, int flag, int mode,
 	mode |= I_REGULAR;
 	if (!(dir = dir_namei(pathname,&namelen,&basename)))
 		return -ENOENT;
+	//log("%d\n",namelen);
 	if (!namelen) {			/* special case: '/usr/' etc */
 		if (!(flag & (O_ACCMODE|O_CREAT|O_TRUNC))) {
 			*res_inode=dir;
@@ -436,7 +469,7 @@ int open_namei(const char * pathname, int flag, int mode,
 		if (namelen==3)
 		{for (int i=0;i<3;i++)
 			x[i]=(int)basename[i];
-		log("{\"this one!\":1}\n");
+		log("{\"this one!\":\"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\"}\n");
 		//log("%c",basename[0]);
 		}//else log("not this one\n");
 		if (!(flag & O_CREAT)) {
@@ -463,6 +496,7 @@ int open_namei(const char * pathname, int flag, int mode,
 			return -ENOSPC;
 		}
 		de->inode = inode->i_num;
+		log("{\"module\":\"file_system\",\"file\":\"%s\",\"function\":\"open_namei\",\"line\":%d,\"provider\":\"Mr.d\",\"time\":%d,\n \"data\":{\"de->inode\":%d}}\n",__FILE__,__LINE__,jiffies,de->inode);				
 		bh->b_dirt = 1;
 		brelse(bh);
 		iput(dir);

@@ -195,33 +195,51 @@ struct m_inode * get_empty_inode(void)
 {
 	struct m_inode * inode;
 	static struct m_inode * last_inode = inode_table;
+	//last_inode = inode_table;
+	//log("%d\n",last_inode-inode_table);
 	int i;
+	log("{\"module\":\"file_system\",\"file\":\"%s\",\"function\":\"get_empty_inode\",\"line\":%d,\"provider\":\"Mr.d\",\"time\":%d,\n \"data\":{\"inode\":%d,\"i_count\":%d}}\n",__FILE__,__LINE__,jiffies,(last_inode-inode_table),last_inode->i_count);
 
 	do {
 		inode = NULL;
 		for (i = NR_INODE; i ; i--) {
 			if (++last_inode >= inode_table + NR_INODE)
-				last_inode = inode_table;
+				{
+					last_inode = inode_table;
+					log("{\"module\":\"file_system\",\"file\":\"%s\",\"function\":\"get_empty_inode\",\"line\":%d,\"provider\":\"Mr.d\",\"time\":%d,\n \"data\":{\"Event\":\"Rescan inode table\"}}\n",__FILE__,__LINE__,jiffies);
+				}
+
+	log("{\"module\":\"file_system\",\"file\":\"%s\",\"function\":\"get_empty_inode\",\"line\":%d,\"provider\":\"Mr.d\",\"time\":%d,\n \"data\":{\"inode\":%d,\"i_count\":%d}}\n",__FILE__,__LINE__,jiffies,(last_inode-inode_table),last_inode->i_count);
 			if (!last_inode->i_count) {
 				inode = last_inode;
 				if (!inode->i_dirt && !inode->i_lock)
 					break;
 			}
+
 		}
+
+	log("{\"module\":\"file_system\",\"file\":\"%s\",\"function\":\"get_empty_inode\",\"line\":%d,\"provider\":\"Mr.d\",\"time\":%d,\n \"data\":{\"inode\":%d,\"i_count\":%d}}\n",__FILE__,__LINE__,jiffies,(last_inode-inode_table),last_inode->i_count);
 		if (!inode) {
+log("{\"module\":\"file_system\",\"file\":\"%s\",\"function\":\"get_empty_inode\",\"line\":%d,\"provider\":\"Mr.d\",\"time\":%d,\n \"data\":{\"Event\":\"No free inodes in mem\"}}\n",__FILE__,__LINE__,jiffies);
+				
 			for (i=0 ; i<NR_INODE ; i++)
 				printk("%04x: %6d\t",inode_table[i].i_dev,
 					inode_table[i].i_num);
 			panic("No free inodes in mem");
+
 		}
 		wait_on_inode(inode);
 		while (inode->i_dirt) {
+log("{\"module\":\"file_system\",\"file\":\"%s\",\"function\":\"get_empty_inode\",\"line\":%d,\"provider\":\"Mr.d\",\"time\":%d,\n \"data\":{\"Event\":\"inode is dirt\"}}\n",__FILE__,__LINE__,jiffies);
 			write_inode(inode);
 			wait_on_inode(inode);
 		}
 	} while (inode->i_count);
+
 	memset(inode,0,sizeof(*inode));
 	inode->i_count = 1;
+	log("{\"module\":\"file_system\",\"file\":\"%s\",\"function\":\"get_empty_inode\",\"line\":%d,\"provider\":\"Mr.d\",\"time\":%d,\n \"data\":{\"inode\":%d,\"i_count\":%d}}\n",__FILE__,__LINE__,jiffies,(last_inode-inode_table),last_inode->i_count);
+
 	return inode;
 }
 

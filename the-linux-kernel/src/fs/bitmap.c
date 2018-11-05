@@ -147,12 +147,16 @@ struct m_inode * new_inode(int dev)
 	j = 8192;
 	for (i=0 ; i<8 ; i++)
 		if ((bh=sb->s_imap[i]))
+		{
+		log("{\"module\":\"file_system\",\"file\":\"bitmap.c\",\"function\":\"new_inode\",\"line\":151,\"provider\":\"Mr.d\",\"time\":%d,\n \"data\":{\"sb->s_imap[%d]\":%d}}\n",jiffies,i,bh);
 			if ((j=find_first_zero(bh->b_data))<8192)
-				break;
-	if (!bh || j >= 8192 || j+i*8192 > sb->s_ninodes) {
+				break;		
+		}	
+		if (!bh || j >= 8192 || j+i*8192 > sb->s_ninodes) {
 		iput(inode);
 		return NULL;
 	}
+	log("{\"module\":\"file_system\",\"file\":\"bitmap.c\",\"function\":\"new_inode\",\"line\":159,\"provider\":\"Mr.d\",\"time\":%d,\n \"data\":{\"first_zero\":%d}}\n",jiffies,j);
 	if (set_bit(j,bh->b_data))
 		panic("new_inode: bit already set");
 	bh->b_dirt = 1;
@@ -164,5 +168,6 @@ struct m_inode * new_inode(int dev)
 	inode->i_dirt=1;
 	inode->i_num = j + i*8192;
 	inode->i_mtime = inode->i_atime = inode->i_ctime = CURRENT_TIME;
+	log("{\"module\":\"file_system\",\"file\":\"bitmap.c\",\"function\":\"new_inode\",\"line\":172,\"provider\":\"Mr.d\",\"time\":%d,\n \"data\":{\"i_count\":%u,\"i_nlinks\":%u,\"i_dev\":%u,\"i_uid\":%u,\"i_gid\":%u,\"i_dirt\":%u,\"i_num\":%u,\"i_time\":%u}}\n",jiffies,inode->i_count,inode->i_nlinks,inode->i_dev,inode->i_uid,inode->i_gid,inode->i_dirt,inode->i_num,inode->i_mtime);	
 	return inode;
 }
