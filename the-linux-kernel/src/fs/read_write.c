@@ -84,7 +84,7 @@ int sys_write(unsigned int fd,char * buf,int count)
 {
 	struct file * file;
 	struct m_inode * inode;
-	
+	log("{\"module\":\"file_system\",\"file\":\"%s\",\"function\":\"sys_write\",\"line\":%d,\"provider\":\"Mr.d\",\"time\":%d,\n\"data\":{\"Event\":\"write a file\",\"fd\":%d,\"f_node\":%d}}\n",__FILE__,__LINE__,jiffies,fd,file->f_inode);
 	if (fd>=NR_OPEN || count <0 || !(file=current->filp[fd]))
 		return -EINVAL;
 	if (!count)
@@ -97,7 +97,9 @@ int sys_write(unsigned int fd,char * buf,int count)
 	if (S_ISBLK(inode->i_mode))
 		return block_write(inode->i_zone[0],&file->f_pos,buf,count);
 	if (S_ISREG(inode->i_mode))
+{
+		log("{\"module\":\"file_system\",\"file\":\"%s\",\"function\":\"sys_write\",\"line\":%d,\"provider\":\"Mr.d\",\"time\":%d,\n\"data\":{\"Event\":\"write a normal file\",\"fd\":%d}}\n",__FILE__,__LINE__,jiffies,fd);
 		return file_write(inode,file,buf,count);
-	printk("(Write)inode->i_mode=%06o\n\r",inode->i_mode);
+}	printk("(Write)inode->i_mode=%06o\n\r",inode->i_mode);
 	return -EINVAL;
 }
