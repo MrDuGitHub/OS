@@ -144,6 +144,8 @@ int bmap(struct m_inode * inode,int block)
 
 int create_block(struct m_inode * inode, int block)
 {
+
+		log("create\n");
 	return _bmap(inode,block,1);
 }
 		
