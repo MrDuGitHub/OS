@@ -213,6 +213,7 @@ struct buffer_head * getblk(int dev,int block)
 repeat:
 	if ((bh = get_hash_table(dev,block)))
 		return bh;
+log("{\"module\":\"file_system\",\"file\":\"%s\",\"function\":\"getblk\",\"line\":%d,\"provider\":\"Mr.d\",\"time\":%d,\n\"data\":{\"Event\":\"search_hash_table\"}}\n",__FILE__,__LINE__,jiffies);
 	tmp = free_list;
 	do {
 		if (tmp->b_count)
@@ -224,6 +225,8 @@ repeat:
 		}
 /* and repeat until we find something good */
 	} while ((tmp = tmp->b_next_free) != free_list);
+log("{\"module\":\"file_system\",\"file\":\"%s\",\"function\":\"getblk\",\"line\":%d,\"provider\":\"Mr.d\",\"time\":%d,\n\"data\":{\"Event\":\"search_good_buffer\",\"bh->b_count\":%d,\"bh->b_dirt\":%d,\"bh->b_lock\":%d}}\n",__FILE__,__LINE__,jiffies,bh->b_count,bh->b_dirt,bh->b_lock);
+
 	if (!bh) {
 		sleep_on(&buffer_wait);
 		goto repeat;
@@ -246,9 +249,12 @@ repeat:
 	bh->b_count=1;
 	bh->b_dirt=0;
 	bh->b_uptodate=0;
+
 	remove_from_queues(bh);
 	bh->b_dev=dev;
 	bh->b_blocknr=block;
+
+log("{\"module\":\"file_system\",\"file\":\"%s\",\"function\":\"getblk\",\"line\":%d,\"provider\":\"Mr.d\",\"time\":%d,\n\"data\":{\"Event\":\"set_buffer\",\"bh->b_count\":%d,\"bh->b_dirt\":%d,\"bh->b_uptodate\":%d,\"bh->b_uptodate\":%d,\"bh->b_dev\":%d,\"bh->b_block\":%d}}\n",__FILE__,__LINE__,jiffies,bh->b_count,bh->b_dirt,bh->b_uptodate,bh->b_dev,bh->b_blocknr);
 	insert_into_queues(bh);
 	return bh;
 }
@@ -274,7 +280,17 @@ struct buffer_head * bread(int dev,int block)
 	if (!(bh=getblk(dev,block)))
 		panic("bread: getblk returned NULL\n");
 	if (bh->b_uptodate)
-		return bh;
+{
+		
+
+log("{\"module\":\"file_system\",\"file\":\"%s\",\"function\":\"bread\",\"line\":%d,\"provider\":\"Mr.d\",\"time\":%d,\n\"data\":{\"Event\":\"bread\"}}\n",__FILE__,__LINE__,jiffies);
+
+return bh;
+
+
+
+}
+
 	ll_rw_block(READ,bh);
 	wait_on_buffer(bh);
 	if (bh->b_uptodate)

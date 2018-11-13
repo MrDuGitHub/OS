@@ -68,7 +68,7 @@ log("{\"module\":\"file_system\",\"file\":\"%s\",\"function\":\"file_write\",\"l
 	else
 {
 		pos = filp->f_pos;
-log("{\"module\":\"file_system\",\"file\":\"%s\",\"function\":\"file_write\",\"line\":%d,\"provider\":\"Mr.d\",\"time\":%d,\n\"data\":{\"Event\":\"current\",\"pos\":%d}}\n",__FILE__,__LINE__,jiffies,pos);
+log("{\"module\":\"file_system\",\"file\":\"%s\",\"function\":\"file_write\",\"line\":%d,\"provider\":\"Mr.d\",\"time\":%d,\n\"data\":{\"Event\":\"current_poniter\",\"pos\":%d}}\n",__FILE__,__LINE__,jiffies,pos);
 }
 	while (i<count) {
 		if (!(block = create_block(inode,pos/BLOCK_SIZE)))

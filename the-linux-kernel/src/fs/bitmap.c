@@ -81,15 +81,24 @@ int new_block(int dev)
 	if (!(sb = get_super(dev)))
 		panic("trying to get new block from nonexistant device");
 	j = 8192;
+log("{\"module\":\"file_system\",\"file\":\"%s\",\"function\":\"new_block\",\"line\":%d,\"provider\":\"Mr.d\",\"time\":%d,\n\"data\":{\"Event\":\"get_dev_super\",\"block\":%d}}\n",__FILE__,__LINE__,jiffies,sb);
 	for (i=0 ; i<8 ; i++)
 		if ((bh=sb->s_zmap[i]))
+{
+
+log("{\"module\":\"file_system\",\"file\":\"%s\",\"function\":\"new_block\",\"line\":%d,\"provider\":\"Mr.d\",\"time\":%d,\n\"data\":{\"Event\":\"comapare_s_zmap\",\"sb->s_zmap[%d]\":%d}}\n",__FILE__,__LINE__,jiffies,i,bh);
 			if ((j=find_first_zero(bh->b_data))<8192)
 				break;
+
+}
 	if (i>=8 || !bh || j>=8192)
 		return 0;
+
 	if (set_bit(j,bh->b_data))
 		panic("new_block: bit already set");
+
 	bh->b_dirt = 1;
+log("{\"module\":\"file_system\",\"file\":\"%s\",\"function\":\"new_block\",\"line\":%d,\"provider\":\"Mr.d\",\"time\":%d,\n\"data\":{\"Event\":\"set_bit\",\"s_zmap->b_data_bits\":%d,\"s_zmap->b_dirt\":%d}}\n",__FILE__,__LINE__,jiffies,j,bh->b_dirt);
 	j += i*8192 + sb->s_firstdatazone-1;
 	if (j >= sb->s_nzones)
 		return 0;
@@ -98,9 +107,12 @@ int new_block(int dev)
 	if (bh->b_count != 1)
 		panic("new block: count is != 1");
 	clear_block(bh->b_data);
+log("{\"module\":\"file_system\",\"file\":\"%s\",\"function\":\"new_block\",\"line\":%d,\"provider\":\"Mr.d\",\"time\":%d,\n\"data\":{\"Event\":\"clear_block\"}}\n",__FILE__,__LINE__,jiffies);
+
 	bh->b_uptodate = 1;
 	bh->b_dirt = 1;
 	brelse(bh);
+log("{\"module\":\"file_system\",\"file\":\"%s\",\"function\":\"new_block\",\"line\":%d,\"provider\":\"Mr.d\",\"time\":%d,\n\"data\":{\"Event\":\"get_logic_block\",\"logic_block\":%d}}\n",__FILE__,__LINE__,jiffies,j);
 	return j;
 }
 
