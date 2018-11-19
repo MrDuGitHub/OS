@@ -49,25 +49,36 @@ void Loop()
         case 0: scene_2();break;
         case 1: stop();scene_1();break;
         case 2: scene_2();break;
-        case 3: stop();   break;
+        case 3: scene_3();break;
     }  
 }
 /******************************* The Main Loop *******************************/
 
 /**************************** The animation effect ***************************/
-void fade(float base_t,float sum_t,float fade_t)
+void fade(float base_t,float sum_t,float fade_t1,float fade_t2,int r,int g,int b)
 {
-    if (time()-base_t<fade_t) fill(0,0,0,(mtime()-base_t*1000)*255/(fade_t*1000)); 
-    else if (time()-base_t<(sum_t-fade_t)) fill(0,0,0,255); 
-    else fill(0,0,0,(sum_t*1000-(mtime()-base_t*1000))*255/(fade_t*1000));
+    if (time()<base_t || time()>base_t+sum_t) return;
+    if (time()-base_t<fade_t1) fill(r,g,b,(mtime()-base_t*1000)*255/(fade_t1*1000)); 
+    else if (time()-base_t<(sum_t-fade_t2)) fill(r,g,b,255); 
+    else fill(r,g,b,(sum_t*1000-(mtime()-base_t*1000))*255/(fade_t2*1000));
+}
+
+void line_fade(float base_t,float sum_t,float fade_t1,float fade_t2,int r,int g,int b)
+{
+    if (time()<base_t || time()>base_t+sum_t) return;
+    if (time()-base_t<fade_t1) stroke(r,g,b,(mtime()-base_t*1000)*255/(fade_t1*1000)); 
+    else if (time()-base_t<(sum_t-fade_t1)) stroke(r,g,b,255); 
+    else stroke(r,g,b,(sum_t*1000-(mtime()-base_t*1000))*255/(fade_t2*1000));
 }
 
 void penguin_fade(float base_t,float sum_t,float fade_t1,float fade_t2)
 {
+    if (time()<base_t || time()>base_t+sum_t) return;
     if (time()-base_t<fade_t1) tint(255,(mtime()-base_t*1000)*255/(fade_t1*1000)); 
     else if (time()-base_t<(sum_t-fade_t2)) tint(255,255); 
     else tint(255,(sum_t*1000-(mtime()-base_t*1000))*255/(fade_t2*1000));
 }
+
 /**************************** The animation effect ***************************/
 
 /**************************** The module of cloud ****************************/
@@ -76,6 +87,7 @@ int [] cloud_dy={19,-11,19,-16,4,29,44,104,89,119,124,78,109,39,49};
 int cloud_X=206,cloud_Y=114;
 void cloud(int x,int y,float size)
 {
+    stroke(0,0,0,255);
     beginShape();
     vertex(x+cloud_dx[0]*size, y+cloud_dy[14]*size);   // vertex(50,180);
     bezierVertex(x+cloud_dx[0]*size,y+cloud_dy[0]*size,x+cloud_dx[1]*size,y+cloud_dy[1]*size,x+cloud_dx[2]*size,y+cloud_dy[2]*size);
@@ -113,7 +125,7 @@ void Text_penguin(String s,float fade_bt,float fade_st,float fade_t)
     int tmp_Y=int(penguin_Y-(penguin.height-dy)*penguin_size/2-tmp_size*cloud_Y);
     noFill();
     cloud(tmp_X,tmp_Y,tmp_size);
-    fade(fade_bt,fade_st,fade_t);
+    fade(fade_bt,fade_st,fade_t,fade_t,0,0,0);
     Text_box(tmp_X+30*tmp_size,tmp_Y+20*tmp_size,139*tmp_size,58*tmp_size,24,s);
 }
 /***************************** The module of text ****************************/
@@ -144,8 +156,8 @@ void scene_0()
     
     String s1="Hello!\nWelcome to the world of Linux 0.11!";
     String s2="Today,I want to introduce you to the file system."; 
-    String s3="This is the s3,and I don't know what else to say.";
-    String s4="So...\nHappy New Year!everyone~";
+    String s3="Tt will be very interesting.";
+    String s4="So,let's begin~";
     switch(frame_index)
     {
       case 0:break;
@@ -191,11 +203,16 @@ void scene_1()
     }
     image(penguin,x,y,w,h);
     penguin_X=x;penguin_Y=y;
+    println(x,y);
 }
 
+void box()
+{
+  
+}
 void scene_2()
 {
-    int[] time_f={5,10,15,20,22};
+    int[] time_f={6,8,12,16,20};
     if (time()==0) frame_index=0;
     int time_n=time_f[frame_index];
     if (time()>=time_n) 
@@ -213,18 +230,85 @@ void scene_2()
     penguin_X=1736;penguin_Y=863;penguin_size=0.75;
     int x1=penguin_X,y1=penguin_Y;
     //println(x1,y1);
-    image(penguin,penguin_X,penguin_Y);
-    String s1="Hello!\nWelcome to the world of Linux 0.11!";
+    tint(255,255);
+    image(penguin,penguin_X,penguin_Y,penguin.width*penguin_size,penguin.height*penguin_size);
+    String s1="The file system of Linux 0.11 is based on the MINIX 1.0 file system.";
     String s2="Today,I want to introduce you to the file system."; 
     String s3="This is the s3,and I don't know what else to say.";
     String s4="So...\nHappy New Year!everyone~";
+    int[] box_x={400,440,480,520,560,680};
+    int box_y=400;
+    int box_h=50;
+    int box_w=40;
+    
     switch(frame_index)
     {
-      case 0:Text_penguin(s1,0,5,1.5);break;
-      case 1:Text_penguin(s2,time_f[frame_index-1],5,1.5);break;
-      case 2:Text_penguin(s3,time_f[frame_index-1],5,1.5);break;
-      case 3:Text_penguin(s4,time_f[frame_index-1],5,1.5);break;
+      case 0:Text_penguin(s1,0,4,1);
+             
+             fade(0,1,1,0,255, 204, 153);
+             line_fade(0,1,1,0,0,0,0);
+             if (time()<1)           rect(box_x[0],box_y,box_w,box_h);
+             fill(0);
+             Text_box(box_x[0]-30,box_y-80,100,100,24,"boot");
+             fade(1,1,1,0,255, 153, 204);
+             line_fade(1,1,1,0,0,0,0);
+             if (time()>=1&&time()<2)rect(box_x[1],box_y,box_w,box_h);
+             fill(0);
+             Text_box(box_x[1]-30,box_y+30,100,100,24,"super block");
+             fade(2,1,1,0,255, 255, 153);
+             line_fade(2,1,1,0,0,0,0);
+             if (time()>=2&&time()<3)rect(box_x[2],box_y,box_w,box_h);
+             fill(0);
+             Text_box(box_x[2]-30,box_y-90,100,100,24,"inode bitmap");fade(3,1,1,0,204, 255, 204);
+             line_fade(3,1,1,0,0,0,0);
+             if (time()>=3&&time()<4)rect(box_x[3],box_y,box_w,box_h);           
+             fade(4,1,1,0,204, 255, 255);
+             line_fade(4,1,1,0,0,0,0);
+             if (time()>=4&&time()<5)
+             for (int i=0;i<4;i++)
+                 rect(box_x[4]+i*box_w,box_y,box_w,box_h);
+             fade(5,1,1,0,153, 204, 255);
+             line_fade(5,1,1,0,0,0,0);
+             if (time()>=5&&time()<6)
+             for (int i=0;i<10;i++)
+                 rect(box_x[5]+i*box_w,box_y,box_w,box_h);
+             
+             if (time()>=1){fill(255, 204, 153); stroke(0,0,0);rect(box_x[0],box_y,box_w,box_h);}  
+             if (time()>=2){fill(255, 153, 204);stroke(0,0,0);rect(box_x[1],box_y,box_w,box_h);}
+             if (time()>=3){fill(255, 255, 153); stroke(0,0,0);rect(box_x[2],box_y,box_w,box_h);}
+             if (time()>=4){fill(204, 255, 204); stroke(0,0,0);rect(box_x[3],box_y,box_w,box_h);}
+             if (time()>=5){fill(204, 255, 255  ); stroke(0,0,0);
+           
+             for (int i=0;i<4;i++)
+                 rect(box_x[4]+i*box_w,box_y,box_w,box_h);}
+             break;
+      case 1:Text_penguin(s2,time_f[frame_index-1],4,1);break;
+      case 2:Text_penguin(s3,time_f[frame_index-1],4,1);break;
+      case 3:Text_penguin(s4,time_f[frame_index-1],4,1);break;
       case 4:break;
+    }
+}
+
+void scene_3()
+{
+    int[] time_f={1};
+    if (time()==0) frame_index=0;
+    int time_n=time_f[frame_index];
+    if (time()>=time_n) 
+    {
+        frame_index++;frame_index%=time_f.length;
+        time_n=time_f[frame_index];
+    }
+    fill(0);
+    textAlign(LEFT,TOP);
+    Text(24,0,0,"Scene_3,frame_"+str(frame_index));  
+    Text(24,0,24,"time="+str(float(millis()/100)/10)+" s");
+    Text(24,0,24*2,"L_stime="+str(time())+",L_mtime="+str(mtime()));
+    fill(255);
+    
+    switch(frame_index)
+    {
+      case 0:stop();break;
     }
 }
 /*****************************       Scenes       ****************************/
