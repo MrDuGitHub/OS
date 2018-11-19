@@ -213,9 +213,10 @@ int sys_creat(const char * pathname, int mode)
 int sys_close(unsigned int fd)
 {	
 	struct file * filp;
-
+log("close\n");
 	if (fd >= NR_OPEN)
 		return -EINVAL;
+log("{\"module\":\"file_system\",\"file\":\"%s\",\"function\":\"sys_open\",\"line\":%d,\"provider\":\"Mr.d\",\"time\":%d,\n\"data\":{\"name\":\"%s\",\"fd\":%d,\"close_on_exec\":%d}}\n",__FILE__,__LINE__,jiffies,name,fd,current->close_on_exec);
 	current->close_on_exec &= ~(1<<fd);
 	if (!(filp = current->filp[fd]))
 		return -EINVAL;
