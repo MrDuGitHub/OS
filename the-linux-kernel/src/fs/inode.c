@@ -83,7 +83,7 @@ static int _bmap(struct m_inode * inode,int block,int create)
 			if ((inode->i_zone[block]=new_block(inode->i_dev))) {
 				inode->i_ctime=CURRENT_TIME;
 				inode->i_dirt=1;
-	log("{\"module\":\"file_system\",\"file\":\"%s\",\"function\":\"_bmap\",\"line\":%d,\"provider\":\"Mr.d\",\"time\":%d,\n\"data\":{\"Event\":\"direct_block_create\",\"block\":%d,\"inode->i_zone[block]\":%d,\"inode->i_ctime\":%d,\"inode->i_dirt\":%d}}\n",__FILE__,__LINE__,jiffies,block,inode->i_zone[block],inode->i_ctime,inode->i_dirt);
+	log("{\"module\":\"file_system\",\"file\":\"%s\",\"function\":\"_bmap\",\"line\":%d,\"provider\":\"Mr.d\",\"time\":%d,\n\"data\":{\"Event\":\"direct_block_create\",\"block\":%d,\"inode->i_zone[%d]\":%d,\"inode->i_ctime\":%d,\"inode->i_dirt\":%d}}\n",__FILE__,__LINE__,jiffies,block,block,inode->i_zone[block],inode->i_ctime,inode->i_dirt);
 
 
 			}

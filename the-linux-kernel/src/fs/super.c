@@ -59,8 +59,12 @@ struct super_block * get_super(int dev)
 
 	if (!dev)
 		return NULL;
+log("{\"module\":\"file_system\",\"file\":\"%s\",\"function\":\"get_super\",\"line\":%d,\"provider\":\"wws\",\"time\":%d,\n\"data\":{\"Event\":\"judge_dev\",\"dev\":%d}}\n",__FILE__,__LINE__,jiffies,dev);
 	s = 0+super_block;
-	while (s < NR_SUPER+super_block)
+int i=0;
+	while (s < NR_SUPER+super_block){
+log("{\"module\":\"file_system\",\"file\":\"%s\",\"function\":\"get_super\",\"line\":%d,\"provider\":\"wws\",\"time\":%d,\n\"data\":{\"Event\":\"find_super_block\",\"super_block\":%d}}\n",__FILE__,__LINE__,jiffies,i);
+i++;
 		if (s->s_dev == dev) {
 			wait_on_super(s);
 			if (s->s_dev == dev)
@@ -68,6 +72,7 @@ struct super_block * get_super(int dev)
 			s = 0+super_block;
 		} else
 			s++;
+}
 	return NULL;
 }
 
