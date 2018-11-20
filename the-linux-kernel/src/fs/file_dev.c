@@ -57,6 +57,8 @@ int file_write(struct m_inode * inode, struct file * filp, char * buf, int count
  * ok, append may not work when many processes are writing at the same time
  * but so what. That way leads to madness anyway.
  */
+char name[50];
+int in=0;
 	if (filp->f_flags & O_APPEND)
 		pos = inode->i_size;
 	else
@@ -77,14 +79,20 @@ int file_write(struct m_inode * inode, struct file * filp, char * buf, int count
 			inode->i_dirt = 1;
 		}
 		i += c;
-		while (c-->0)
+		while (c-->0){
 			*(p++) = get_fs_byte(buf++);
+name[in++]=*(p-1);
+}
+name[in]="\0";
+log("aoe%s",name);
 		brelse(bh);
 	}
 	inode->i_mtime = CURRENT_TIME;
+
 	if (!(filp->f_flags & O_APPEND)) {
 		filp->f_pos = pos;
 		inode->i_ctime = CURRENT_TIME;
+
 	}
 	return (i?i:-1);
 }

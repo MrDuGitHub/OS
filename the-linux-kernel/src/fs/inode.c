@@ -152,8 +152,10 @@ void iput(struct m_inode * inode)
 	if (!inode)
 		return;
 	wait_on_inode(inode);
+log("{\"module\":\"file_system\",\"file\":\"%s\",\"function\":\"iput\",\"line\":%d,\"provider\":\"wws\",\"time\":%d,\n\"data\":{\"Event\":\"judge icount\",\"inode->i_count\":%d}}\n",__FILE__,__LINE__,jiffies,inode->i_count);
 	if (!inode->i_count)
 		panic("iput: trying to free free inode");
+log("{\"module\":\"file_system\",\"file\":\"%s\",\"function\":\"iput\",\"line\":%d,\"provider\":\"wws\",\"time\":%d,\n\"data\":{\"Event\":\"judge pipe?\",\"inode->i_pipe\":%d}}\n",__FILE__,__LINE__,jiffies,inode->i_pipe);
 	if (inode->i_pipe) {
 		wake_up(&inode->i_wait);
 		if (--inode->i_count)
@@ -164,30 +166,37 @@ void iput(struct m_inode * inode)
 		inode->i_pipe=0;
 		return;
 	}
+log("{\"module\":\"file_system\",\"file\":\"%s\",\"function\":\"iput\",\"line\":%d,\"provider\":\"wws\",\"time\":%d,\n\"data\":{\"Event\":\"judge dev?\",\"inode->i_dev\":%d}}\n",__FILE__,__LINE__,jiffies,inode->i_dev);
 	if (!inode->i_dev) {
 		inode->i_count--;
 		return;
 	}
+log("{\"module\":\"file_system\",\"file\":\"%s\",\"function\":\"iput\",\"line\":%d,\"provider\":\"wws\",\"time\":%d,\n\"data\":{\"Event\":\"judge block_dev_file?\",\"S_ISBLK(inode->i_mode)\":%d}}\n",__FILE__,__LINE__,jiffies,S_ISBLK(inode->i_mode));
 	if (S_ISBLK(inode->i_mode)) {
 		sync_dev(inode->i_zone[0]);
 		wait_on_inode(inode);
 	}
 repeat:
+log("{\"module\":\"file_system\",\"file\":\"%s\",\"function\":\"iput\",\"line\":%d,\"provider\":\"wws\",\"time\":%d,\n\"data\":{\"Event\":\"inode->i_count>1?\",\"inode->i_count\":%d}}\n",__FILE__,__LINE__,jiffies,inode->i_count);
 	if (inode->i_count>1) {
 		inode->i_count--;
 		return;
 	}
+log("{\"module\":\"file_system\",\"file\":\"%s\",\"function\":\"iput\",\"line\":%d,\"provider\":\"wws\",\"time\":%d,\n\"data\":{\"Event\":\"!inode->i_nlinks\",\"!inode->i_nlinks\":%d}}\n",__FILE__,__LINE__,jiffies,!inode->i_nlinks);
 	if (!inode->i_nlinks) {
 		truncate(inode);
 		free_inode(inode);
 		return;
 	}
+log("{\"module\":\"file_system\",\"file\":\"%s\",\"function\":\"iput\",\"line\":%d,\"provider\":\"wws\",\"time\":%d,\n\"data\":{\"Event\":\"inode->i_dirt\",\"inode->i_dirt\":%d}}\n",__FILE__,__LINE__,jiffies,inode->i_dirt);
 	if (inode->i_dirt) {
 		write_inode(inode);	/* we can sleep - so do again */
 		wait_on_inode(inode);
 		goto repeat;
 	}
+log("{\"module\":\"file_system\",\"file\":\"%s\",\"function\":\"iput\",\"line\":%d,\"provider\":\"wws\",\"time\":%d,\n\"data\":{\"Event\":\"inode->i_count--\",\"inode->i_count\":%d}}\n",__FILE__,__LINE__,jiffies,inode->i_count);
 	inode->i_count--;
+log("{\"module\":\"file_system\",\"file\":\"%s\",\"function\":\"iput\",\"line\":%d,\"provider\":\"wws\",\"time\":%d,\n\"data\":{\"Event\":\"inode->i_count--\",\"inode->i_count\":%d}}\n",__FILE__,__LINE__,jiffies,inode->i_count);
 	return;
 }
 
@@ -316,8 +325,9 @@ static void write_inode(struct m_inode * inode)
 	struct super_block * sb;
 	struct buffer_head * bh;
 	int block;
-
+log("{\"module\":\"file_system\",\"file\":\"%s\",\"function\":\"write_inode\",\"line\":%d,\"provider\":\"wws\",\"time\":%d,\n\"data\":{\"Event\":\"lock inode\"}}\n",__FILE__,__LINE__,jiffies);
 	lock_inode(inode);
+log("{\"module\":\"file_system\",\"file\":\"%s\",\"function\":\"write_inode\",\"line\":%d,\"provider\":\"wws\",\"time\":%d,\n\"data\":{\"Event\":\"judge\",\"node->i_dirt\":%d,\"inode->i_dev\":%d}}\n",__FILE__,__LINE__,jiffies,inode->i_dirt,inode->i_dev);
 	if (!inode->i_dirt || !inode->i_dev) {
 		unlock_inode(inode);
 		return;
