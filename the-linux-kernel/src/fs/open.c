@@ -213,7 +213,7 @@ int sys_creat(const char * pathname, int mode)
 int sys_close(unsigned int fd)
 {	
 	struct file * filp;
-log("close\n");
+log("{\"module\":\"file_system\",\"file\":\"%s\",\"function\":\"sys_close\",\"line\":%d,\"provider\":\"wws\",\"time\":%d,\n\"data\":{\"Event\":\"close\"}}\n",__FILE__,__LINE__,jiffies);
 	if (fd >= NR_OPEN)
 		return -EINVAL;
 log("{\"module\":\"file_system\",\"file\":\"%s\",\"function\":\"sys_close\",\"line\":%d,\"provider\":\"wws\",\"time\":%d,\n\"data\":{\"Event\":\"checkout para is vaild\",\"fd\":%d,\"close_on_exec\":%d}}\n",__FILE__,__LINE__,jiffies,fd,current->close_on_exec);

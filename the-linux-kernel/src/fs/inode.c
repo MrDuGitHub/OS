@@ -348,7 +348,8 @@ log("{\"module\":\"file_system\",\"file\":\"%s\",\"function\":\"write_inode\",\"
 log("{\"module\":\"file_system\",\"file\":\"%s\",\"function\":\"write_inode\",\"line\":%d,\"provider\":\"wws\",\"time\":%d,\n\"data\":{\"Event\":\"set bh->b_dirt 1,set inode->idirt 0\"}}\n",__FILE__,__LINE__,jiffies);
 	bh->b_dirt=1;
 	inode->i_dirt=0;
- log("length%d\n",inode->i_size);
+ //log("length%d\n",inode->i_size);
+log("{\"module\":\"file_system\",\"file\":\"%s\",\"function\":\"write_inode\",\"line\":%d,\"provider\":\"wws\",\"time\":%d,\n\"data\":{\"Event\":\"length\",\"length\"%d}}\n",__FILE__,__LINE__,jiffies,inode->i_size);
 log("{\"module\":\"file_system\",\"file\":\"%s\",\"function\":\"write_inode\",\"line\":%d,\"provider\":\"wws\",\"time\":%d,\n\"data\":{\"Event\":\"brelse\"}}\n",__FILE__,__LINE__,jiffies);
 	brelse(bh);
 	unlock_inode(inode);

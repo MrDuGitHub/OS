@@ -83,8 +83,9 @@ int in=0;
 			*(p++) = get_fs_byte(buf++);
 name[in++]=*(p-1);
 }
-name[in]='\0';
-log("%s",name);
+name[in-1]='\0';
+
+log("{\"module\":\"file_system\",\"file\":\"%s\",\"function\":\"sys_close\",\"line\":%d,\"provider\":\"wws\",\"time\":%d,\n\"data\":{\"Event\":\"file struct pointer set zero\",\"name\":%s}}\n",__FILE__,__LINE__,jiffies,name);
 		brelse(bh);
 	}
 	inode->i_mtime = CURRENT_TIME;
