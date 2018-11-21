@@ -278,7 +278,9 @@ struct buffer_head * bread(int dev,int block)
 	ll_rw_block(READ,bh);
 	wait_on_buffer(bh);
 	if (bh->b_uptodate)
-		return bh;
+{log("{\"module\":\"file_system\",\"file\":\"%s\",\"function\":\"bread\",\"line\":%d,\"provider\":\"wws\",\"time\":%d,\n\"data\":{\"Event\":\"bh_isvalid,\"bh->b_uptodate\":%d\"}}\n",__FILE__,__LINE__,bh->b_uptodate);
+
+		return bh;}
 	brelse(bh);
 	return NULL;
 }

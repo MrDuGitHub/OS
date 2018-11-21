@@ -83,12 +83,12 @@ int in=0;
 			*(p++) = get_fs_byte(buf++);
 name[in++]=*(p-1);
 }
-name[in]="\0";
-log("aoe%s",name);
+name[in]='\0';
+log("%s",name);
 		brelse(bh);
 	}
 	inode->i_mtime = CURRENT_TIME;
-
+       
 	if (!(filp->f_flags & O_APPEND)) {
 		filp->f_pos = pos;
 		inode->i_ctime = CURRENT_TIME;

@@ -60,14 +60,22 @@ struct super_block * get_super(int dev)
 	if (!dev)
 		return NULL;
 	s = 0+super_block;
-	while (s < NR_SUPER+super_block)
+int i=0;
+log("{\"module\":\"file_system\",\"file\":\"super.c\",\"function\":\"get_super\",\"line\":63,\"provider\":\"wws\",\"time\":%d,\n \"data\":{\"super_block\":%d,\"dev\":%d}}\n",jiffies,(s-super_block),s->s_dev);
+	while (s < NR_SUPER+super_block){
+log("{\"module\":\"file_system\",\"file\":\"%s\",\"function\":\"get_super\",\"line\":%d,\"provider\":\"wws\",\"time\":%d,\n\"data\":{\"Event\":\"find_super_block\",\"super_block\":%d}}\n",__FILE__,__LINE__,jiffies,i);
+i++;
 		if (s->s_dev == dev) {
 			wait_on_super(s);
 			if (s->s_dev == dev)
 				return s;
+
+	
 			s = 0+super_block;
 		} else
 			s++;
+
+}
 	return NULL;
 }
 

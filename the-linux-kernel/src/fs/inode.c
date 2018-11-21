@@ -332,17 +332,25 @@ log("{\"module\":\"file_system\",\"file\":\"%s\",\"function\":\"write_inode\",\"
 		unlock_inode(inode);
 		return;
 	}
+
 	if (!(sb=get_super(inode->i_dev)))
 		panic("trying to write inode without device");
+log("{\"module\":\"file_system\",\"file\":\"%s\",\"function\":\"write_inode\",\"line\":%d,\"provider\":\"wws\",\"time\":%d,\n\"data\":{\"Event\":\"get_super\"}}\n",__FILE__,__LINE__,jiffies);
 	block = 2 + sb->s_imap_blocks + sb->s_zmap_blocks +
 		(inode->i_num-1)/INODES_PER_BLOCK;
+log("{\"module\":\"file_system\",\"file\":\"%s\",\"function\":\"write_inode\",\"line\":%d,\"provider\":\"wws\",\"time\":%d,\n\"data\":{\"Event\":\"get_super\",\"block\":%d}}\n",__FILE__,__LINE__,jiffies,block);
 	if (!(bh=bread(inode->i_dev,block)))
 		panic("unable to read i-node block");
+log("{\"module\":\"file_system\",\"file\":\"%s\",\"function\":\"write_inode\",\"line\":%d,\"provider\":\"wws\",\"time\":%d,\n\"data\":{\"Event\":\"((struct d_inode *)bh->b_data)[(inode->i_num-1)%INODES_PER_BLOCK] =*(struct d_inode *)inode;\"}}\n",__FILE__,__LINE__,jiffies);
 	((struct d_inode *)bh->b_data)
 		[(inode->i_num-1)%INODES_PER_BLOCK] =
 			*(struct d_inode *)inode;
+log("{\"module\":\"file_system\",\"file\":\"%s\",\"function\":\"write_inode\",\"line\":%d,\"provider\":\"wws\",\"time\":%d,\n\"data\":{\"Event\":\"set bh->b_dirt 1,set inode->idirt 0\"}}\n",__FILE__,__LINE__,jiffies);
 	bh->b_dirt=1;
 	inode->i_dirt=0;
+ log("length%d\n",inode->i_size);
+log("{\"module\":\"file_system\",\"file\":\"%s\",\"function\":\"write_inode\",\"line\":%d,\"provider\":\"wws\",\"time\":%d,\n\"data\":{\"Event\":\"brelse\"}}\n",__FILE__,__LINE__,jiffies);
 	brelse(bh);
 	unlock_inode(inode);
+log("{\"module\":\"file_system\",\"file\":\"%s\",\"function\":\"write_inode\",\"line\":%d,\"provider\":\"wws\",\"time\":%d,\n\"data\":{\"Event\":\"unlock inode\"}}\n",__FILE__,__LINE__,jiffies);
 }
