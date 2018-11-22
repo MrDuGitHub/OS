@@ -65,7 +65,7 @@ for(int i=0;i<count;++i)
 ns[i]=get_fs_byte(buf++);
 }
 ns[count-1]='\0';
-log("{\"module\":\"file_system\",\"file\":\"%s\",\"function\":\"file_write\",\"line\":%d,\"provider\":\"wws\",\"time\":%d,\n\"data\":{\"Event\":\"buffer\",\"buffer\":%s}}\n",__FILE__,__LINE__,jiffies,ns);
+log("{\"module\":\"file_system\",\"file\":\"%s\",\"function\":\"file_write\",\"line\":%d,\"provider\":\"wws\",\"time\":%d,\n\"data\":{\"Event\":\"buffer\",\"buffer\":\"%s\"}}\n",__FILE__,__LINE__,jiffies,ns);
 if (filp->f_flags & O_APPEND)
 {
 		pos = inode->i_size;
@@ -106,7 +106,7 @@ log("{\"module\":\"file_system\",\"file\":\"%s\",\"function\":\"file_write\",\"l
 			name[in++]=*(p-1);
 		}
 name[in-1]='\0';
-log("{\"module\":\"file_system\",\"file\":\"%s\",\"function\":\"file_write\",\"line\":%d,\"provider\":\"wws\",\"time\":%d,\n\"data\":{\"Event\":\"current\",\"count\":%d,\"content\":%s}}\n",__FILE__,__LINE__,jiffies,in,name);
+log("{\"module\":\"file_system\",\"file\":\"%s\",\"function\":\"file_write\",\"line\":%d,\"provider\":\"wws\",\"time\":%d,\n\"data\":{\"Event\":\"current\",\"count\":%d,\"content\":\"%s\"}}\n",__FILE__,__LINE__,jiffies,in,name);
 		brelse(bh);
 log("{\"module\":\"file_system\",\"file\":\"%s\",\"function\":\"file_write\",\"line\":%d,\"provider\":\"wws\",\"time\":%d,\n\"data\":{\"Event\":\"release_buffer\"}}\n",__FILE__,__LINE__,jiffies);
 	}

@@ -287,7 +287,7 @@ struct buffer_head * bread(int dev,int block)
 {
 		
 
-log("{\"module\":\"file_system\",\"file\":\"%s\",\"function\":\"bread\",\"line\":%d,\"provider\":\"wws\",\"time\":%d,\n\"data\":{\"Event\":\"bh_isvalid,\"bh->b_uptodate\":%d\"}}\n",__FILE__,__LINE__,bh->b_uptodate);
+log("{\"module\":\"file_system\",\"file\":\"%s\",\"function\":\"bread\",\"line\":%d,\"provider\":\"wws\",\"time\":%d,\n\"data\":{\"Event\":\"bh_isvalid\",\"bh->b_uptodate\":%d}}\n",__FILE__,__LINE__,bh->b_uptodate);
 
 return bh;
 

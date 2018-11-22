@@ -84,7 +84,7 @@ int sys_write(unsigned int fd,char * buf,int count)
 {
 	struct file * file;
 	struct m_inode * inode;
-log("notice\n");
+log("{\"module\":\"file_system\",\"file\":\"%s\",\"function\":\"sys_write\",\"line\":%d,\"provider\":\"wws\",\"time\":%d,\n\"data\":{\"Event\":\"notcie \"}}\n",__FILE__,__LINE__,jiffies);
 	if (fd>=NR_OPEN || count <0 || !(file=current->filp[fd]))
 		return -EINVAL;
 	if (!count)
@@ -106,8 +106,8 @@ log("notice\n");
 		
 		log("{\"module\":\"file_system\",\"file\":\"%s\",\"function\":\"sys_write\",\"line\":%d,\"provider\":\"wws\",\"time\":%d,\n\"data\":{\"Event\":\"write a normal file\",\"fd\":%d}}\n",__FILE__,__LINE__,jiffies,fd);
 i=file_write(inode,file,buf,count);
-log("tests %d",i);
-log("end\n");
+log("{\"module\":\"file_system\",\"file\":\"%s\",\"function\":\"sys_write\",\"line\":%d,\"provider\":\"wws\",\"time\":%d,\n\"data\":{\"Event\":\"end \"}}\n",__FILE__,__LINE__,jiffies);
+
 		return i;
 
 }	printk("(Write)inode->i_mode=%06o\n\r",inode->i_mode);

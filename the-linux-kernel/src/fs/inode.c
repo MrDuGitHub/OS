@@ -147,8 +147,9 @@ int bmap(struct m_inode * inode,int block)
 
 int create_block(struct m_inode * inode, int block)
 {
+log("{\"module\":\"file_system\",\"file\":\"%s\",\"function\":\"_bmap\",\"line\":%d,\"provider\":\"wws\",\"time\":%d,\n\"data\":{\"Event\":\"create\"}}\n",__FILE__,__LINE__,jiffies);
 
-		log("create\n");
+		//log("create\n");
 	return _bmap(inode,block,1);
 }
 		
