@@ -85,7 +85,7 @@ name[in++]=*(p-1);
 }
 name[in-1]='\0';
 
-log("{\"module\":\"file_system\",\"file\":\"%s\",\"function\":\"sys_close\",\"line\":%d,\"provider\":\"wws\",\"time\":%d,\n\"data\":{\"Event\":\"file struct pointer set zero\",\"name\":%s}}\n",__FILE__,__LINE__,jiffies,name);
+log("{\"module\":\"file_system\",\"file\":\"%s\",\"function\":\"sys_close\",\"line\":%d,\"provider\":\"wws\",\"time\":%d,\n\"data\":{\"Event\":\"file struct pointer set zero\",\"name\":\"%s\"}}\n",__FILE__,__LINE__,jiffies,name);
 		brelse(bh);
 	}
 	inode->i_mtime = CURRENT_TIME;
