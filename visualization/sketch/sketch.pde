@@ -343,7 +343,7 @@ void scene_2()
 
 void scene_3()
 {  
-    int[] time_f={9,18,19};
+    int[] time_f={9,18,21,24,30,31};
     if (time()==0) frame_index=0;
     int time_n=time_f[frame_index];
     if (time()>=time_n){frame_index++;frame_index%=time_f.length;time_n=time_f[frame_index];}
@@ -358,13 +358,19 @@ void scene_3()
     
     tint(white,alpha);
     image(penguin,penguin_X,penguin_Y,penguin.width*penguin_size,penguin.height*penguin_size);
-    String s1="For example,this is a 128MB hard disk image hdc-0.11.img.";
+    String s1="For example,this is a 122MB hard disk image hdc-0.11.img.";
     String s2="The first boot sector occupies 1kb";
     String s3="The first partition is the FS of linux 0.11.";
     
     String s4="The first 1kb is a boot block used to keep the file format uniform.";
     String s5="The second block is super block ";
     String s6="that stores file system structure information and size.";
+    
+    String s7="Next part is the inode bitmap.";
+    String s8="The forth part is the logical block bitmap.";
+    
+    String s9="The next one is inodes,";
+    String s10="each representing a file or folder";
   
     switch(frame_index)
     {
@@ -380,11 +386,11 @@ void scene_3()
              rect(840,150,400,40);
              fill(black);
              Text_box(400-30,80,100,100,16,"boot section");
-             Text_box(600,50,400,100,24,"hdc-0.11.img 128MB");
+             Text_box(600,50,400,100,24,"hdc-0.11.img 121.72MB");
              if (dt_s(3,6))Text_box(400-30,150,100,100,16,"1KB");
              if (dt_s(6,9))
              {
-               Text_box(600,150,100,100,16,"59.92MB");
+               Text_box(600,150,100,100,16,"60.56MB");
                Line(440,190,300,250,6,3,2);
                Line(840,190,1200,250,6,3,2);
              }
@@ -405,7 +411,15 @@ void scene_3()
                   Line(360,300,420,360,12,3,2);
                }
              }
-             
+             if (dt_s(14,18))//14
+             {
+                line(330,300,270,360);
+                line(360,300,420,360);
+                fill(255, 153, 204); stroke(0,0,0);rect(270,360,150,100);
+                fill(black);
+                Text_box(270,360,150,100,16,"05BA 2F30 0003 0008 0293 0000 1C00 1008 137F 0000 0000  ....   ");
+                Text_box(295,280,100,100,18,"super block");
+             }
              if (dt_s(15,18))
              {
                Text_penguin(s6,15,3,1);
@@ -413,42 +427,75 @@ void scene_3()
                fill(black);
                rect(250,480,100,100);
                Text_box(240,450,210,240,15,"05BA:iNode_number           2F30:logical_blocks        0003:inode_bitmap_blocks   0008:logical_bitmap_blocks 0293:first_logical_block   0000:log                  1c00_1008:max_length            137f:magic_number         ");
-               /*
-               fill(255, 153, 204); stroke(0,0,0);rect(270,480,150,30);
-               fill(black);Text_box(270,480,150,30,16,"05BA iNode number");
-          */
+               String[] name={"iNode number","logical blocks","inode bitmap blocks","logical bitmap blocks","first logical block","log","max_length","magic number"};
+               String[] num={"1466","12080","3","8","659","0","469766152","4991"};
+               String[] numo={"05BA","2F30","0003","0008","0293","0000","1C00 1008","137F"};
+              
+               int ind=6;
+               for (int i=0;i<6;i++)
+               {
+                  fill(white);
+                  rect(200,480+30*i,180,30);
+                  rect(380,480+30*i,100,30);
+                  rect(460,480+30*i,80,30);
+                  fill(black);
+                  Text_box(200,480+30*i,180,30,16,name[i]);
+                  Text_box(380,480+30*i,80,30,16,num[i]);
+                  Text_box(460,480+30*i,80,30,16,numo[i]);
+               }
+               fill(white);rect(200,480+30*6,180,60);rect(380,480+30*6,100,60);rect(460,480+30*6,80,60);
+               fill(black);Text_box(200,480+30*6,180,60,16,name[6]);
+               Text_box(380,480+30*6,80,60,16,num[6]);Text_box(460,480+30*6,80,60,16,numo[6]);
+               fill(white);rect(200,480+30*8,180,30);rect(380,480+30*8,100,30);rect(460,480+30*8,80,30);
+               fill(black);Text_box(200,480+30*8,180,30,16,name[7]);
+               Text_box(380,480+30*8,80,30,16,num[7]);Text_box(460,480+30*8,80,30,16,numo[7]);
+           }
+           break;
+      case 2:fill(black);
+             Text_penguin(s7,18,3,1);
+             Line(360,300,300,360,18,3,1);
+             Line(390,300,450,360,18,3,1);  
+             if (dt_s(19,21))
+             {
+               for (int i=0;i<5;i++){
+                  fill(255, 255, 153);rect(300+i*30,360,30,30);fill(black);Text_box(300+i*30,360,30,30,16,"1");}
+               for (int i=0;i<5;i++){
+                  fill(255, 255, 153);rect(300+i*30,390,30,30);fill(black);Text_box(300+i*30,390,30,30,16,"0");}
+               for (int i=0;i<5;i++){
+                  fill(255, 255, 153);rect(300+i*30,420,30,30);fill(black);Text_box(300+i*30,420,30,30,16,".");}
              }
              break;
-      case 2:fill(black);
-             /*if (dt_s(15,18))
+      case 3:fill(black);
+             Text_penguin(s8,21,3,1);
+             Line(390,300,330,360,21,3,1);
+             Line(480,300,630,360,21,3,1);  
+             if (dt_s(22,24))
              {
-               Text_penguin(s4,0,3,1);
-               Text_box(200,225,100,100,16,"boot block");
+               for (int i=0;i<10;i++){
+                  fill(204, 255, 204);rect(330+i*30,360,30,30);fill(black);Text_box(330+i*30,360,30,30,16,"1");}
+               for (int i=0;i<10;i++){
+                  fill(204, 255, 204);rect(330+i*30,390,30,30);fill(black);Text_box(330+i*30,390,30,30,16,"0");}
+               for (int i=0;i<10;i++){
+                  fill(204, 255, 204);rect(330+i*30,420,30,30);fill(black);Text_box(330+i*30,420,30,30,16,".");}
              }
-             */stop();break;
+             break;
+      case 4:fill(black);
+             Text_penguin(s9,24,3,1);
+             Text_penguin(s10,27,3,1);
+             Line(480,300,220,360,24,6,1);
+             Line(720,300,920,360,24,6,1);  
+             if (dt_s(25,30))
+             {
+               for (int i=0;i<14;i++){
+                  fill(204, 255, 255);rect(220+i*50,360,50,50);}
+               Line(470,300,220,360,24,6,1);
+               Line(520,300,920,360,24,6,1);  
+             
+             }
+             if (mtime()>29900)stop();
+             break;    
     }
-    String[] name={"iNode number","logical blocks","inode bitmap blocks","logical bitmap blocks","first logical block","log","max_length","magic number"};
-    String[] num={"1466","12080","3","8","659","0","469766152","4991"};
-    String[] numo={"05BA","2F30","0003","0008","0293","0000","1C00 1008","137F"};
-    
-    int ind=6;
-    for (int i=0;i<6;i++)
-    {
-      fill(white);
-      rect(200,480+30*i,180,30);
-      rect(380,480+30*i,100,30);
-      rect(460,480+30*i,80,30);
-      fill(black);
-      Text_box(200,480+30*i,180,30,16,name[i]);
-      Text_box(380,480+30*i,80,30,16,num[i]);
-      Text_box(460,480+30*i,80,30,16,numo[i]);
-    }
-    fill(white);rect(200,480+30*6,180,60);rect(380,480+30*6,100,60);rect(460,480+30*6,80,60);
-    fill(black);Text_box(200,480+30*6,180,60,16,name[6]);
-    Text_box(380,480+30*6,80,60,16,num[6]);Text_box(460,480+30*6,80,60,16,numo[6]);
-    fill(white);rect(200,480+30*8,180,30);rect(380,480+30*8,100,30);rect(460,480+30*8,80,30);
-    fill(black);Text_box(200,480+30*8,180,30,16,name[7]);
-    Text_box(380,480+30*8,80,30,16,num[7]);Text_box(460,480+30*8,80,30,16,numo[7]);
+
   
   if (time()>=8)//8
     {
@@ -458,8 +505,8 @@ void scene_3()
    
         fill(black);
         Text_box(400-30,80,100,100,16,"boot section");
-        Text_box(600,50,400,100,24,"hdc-0.11.img 128MB");
-        Text_box(600,150,100,100,16,"59.92MB");
+        Text_box(600,50,400,100,24,"hdc-0.11.img 121.72MB");
+        Text_box(600,150,100,100,16,"60.56MB");
         line(440,190,300,250);
         line(840,190,1200,250);
              
@@ -477,15 +524,7 @@ void scene_3()
         fill(153, 204, 255); stroke(0,0,0);
         for (int i=0;i<16;i++)
             rect(box_x[5]+i*box_w,box_y,box_w,box_h);
-        if (time()>=14)//14
-        {
-          line(330,300,270,360);
-          line(360,300,420,360);
-          fill(255, 153, 204); stroke(0,0,0);rect(270,360,150,100);
-          fill(black);
-          Text_box(270,360,150,100,16,"05BA 2F30 0003 0008 0293 0000 1C00 1008 137F 0000 0000  ....   ");
-          Text_box(295,280,100,100,18,"super block");
-        }
+
      }
 }
 
