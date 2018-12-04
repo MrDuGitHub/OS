@@ -10,8 +10,8 @@ static int black=0;
 static int s2ms=1000;
 static int alpha=255;
 
-static int[] scene={50,5,30,6,1};//15
-static int[] scene_time={50,20,50,56,57};
+static int[] scene={15,5,30,33,1};//15
+static int[] scene_time={15,20,50,83,84};
 int scene_index=0;
 int scene_time_now=scene_time[scene_index];
 
@@ -54,7 +54,7 @@ void Loop()
 {
     switch (scene_index)
     {
-        case 0: scene_3();break;
+        case 0: scene_0();break;
         case 1: scene_1();break;
         case 2: scene_2();break;
         case 3: scene_3();break;
@@ -135,6 +135,7 @@ void Text_box(float x,float y,float l,float w,int text_size,String text)
 
 void Text_penguin(String s,float fade_bt,float fade_st,float fade_t)
 {
+    if(time()>fade_bt+fade_st||time()<fade_bt)return;
     int max1=64;
     int tmp_size;
     if (s.length()<max1) tmp_size=2; else tmp_size=3;
@@ -343,7 +344,7 @@ void scene_2()
 
 void scene_3()
 {  
-    int[] time_f={9,18,21,24,30,31};
+    int[] time_f={9,18,21,24,30,33};
     if (time()==0) frame_index=0;
     int time_n=time_f[frame_index];
     if (time()>=time_n){frame_index++;frame_index%=time_f.length;time_n=time_f[frame_index];}
@@ -372,6 +373,8 @@ void scene_3()
     String s9="The next one is inodes,";
     String s10="each representing a file or folder";
   
+    String s11="The rest are the data blocks.";
+    
     switch(frame_index)
     {
       case 0:if (dt_s(0,3))Text_penguin(s1,0,3,1);
@@ -488,15 +491,33 @@ void scene_3()
              {
                for (int i=0;i<14;i++){
                   fill(204, 255, 255);rect(220+i*50,360,50,50);}
-               Line(470,300,220,360,24,6,1);
-               Line(520,300,920,360,24,6,1);  
-             
-             }
-             if (mtime()>29900)stop();
-             break;    
+               if(dt_s(27,30))
+               {
+                 Line(470,410,370,470,27,3,1);
+                 Line(520,410,620,470,27,3,1);  
+                 fill(black); 
+                 if (dt_s(28,30))
+                 {  
+                   line(470,410,370,470);
+                   line(520,410,620,470);   
+                   //line(480,300,220,360);
+                   //line(720,300,1020,360);
+                   for (int i=0;i<14;i++){fill(204, 255, 255);rect(220+i*50,360,50,50);}
+                   String[] t={"i_mode","i_uid","i_size","i_mtime","i_gid","i_nlinks","i_zone[9]"};
+                   String[] n={"18C9","0000","00045404","405DC2CD","00","02","0336~033D"};
+                   for (int i=0;i<7;i++){
+                    fill(white);rect(370,470+i*40,100,40);rect(470,470+i*40,150,40);
+                    fill(black);Text_box(370,470+i*40,100,40,20,t[i]);Text_box(470,470+i*40,150,40,20,n[i]);
+                    }
+                 }
+                }
+              }
+             break;
+      case 5:fill(black);
+             Text_penguin(s11,30,3,1);
+             Text_box(850,300,100,40,24,"data blocks");
+             break;
     }
-
-  
   if (time()>=8)//8
     {
         fill(255, 153, 204); stroke(0,0,0);rect(400,150,40,40);           
@@ -524,7 +545,6 @@ void scene_3()
         fill(153, 204, 255); stroke(0,0,0);
         for (int i=0;i<16;i++)
             rect(box_x[5]+i*box_w,box_y,box_w,box_h);
-
      }
 }
 

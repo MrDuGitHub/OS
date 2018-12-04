@@ -1,4 +1,4 @@
-### Create a file
+	### Create a file
 open.c   
 
     int sys_creat(const char * pathname, int mode)  
@@ -98,7 +98,7 @@ super.c
 00000c00~000017ff i节点位图  3kb  
 00001800~000037ff 逻辑块位图 8kb  
 00038000~000a4fff i节点     645kb  
->18C9 0000 00045404 405DC2CD 00 02 0336
+>18C9 0000 00045404 405DC2CD 00 02 0336  
 >0337 0338 0339 033A 033B 033C 033D 0000  
 >
 
