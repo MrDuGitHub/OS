@@ -17,7 +17,9 @@ int scene_time_now=scene_time[scene_index];
 
 void setup() 
 {
-  size(1920, 1080); //size(2000, 1236);size(1000, 618);
+  //size(1920, 1080); //size(2000, 1236);size(1000, 618);
+  fullScreen();
+//  size(full);
   background(white);
   penguin = loadImage("penguin.jpg");
   imageMode(CENTER);
