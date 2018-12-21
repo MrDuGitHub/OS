@@ -10,8 +10,8 @@ static int black=0;
 static int s2ms=1000;
 static int alpha=255;
 
-static int[] scene={50,5,30,33,3,1};//15
-static int[] scene_time={15,20,50,83,86,87};
+static int[] scene={15,5,30,33,27,1};//15
+static int[] scene_time={15,20,50,83,110,111};
 int scene_index=0;
 int scene_time_now=scene_time[scene_index];
 
@@ -55,12 +55,13 @@ void Loop()
 {
     switch (scene_index)
     {
-        case 0: scene_4();break;
+        case 0: scene_0();break;
         case 1: scene_1();break;
         case 2: scene_2();break;
         case 3: scene_3();break;
         case 4: scene_4();break;
         case 5: scene_5();break;
+        case 6: scene_6();break;
     }  
 }
 /******************************* The Main Loop *******************************/
@@ -571,12 +572,6 @@ void scene_3()
 
 void scene_4()
 {  
-    /*fill(white);
-    stroke(201,201,201);
-    rect(250,50,1200,350);
-    rect(250,400,500,450);
-    rect(750,400,700,450);*/
-    
     int[] time_f={3,6,9,12,18,27};
     if (time()==0) frame_index=0;
     int time_n=time_f[frame_index];
@@ -729,8 +724,8 @@ void scene_4()
                Text_box(705,650,60,40,16,"root");
              }
              stroke(black,alpha);
-             Line(480,300,220,360,18,6,1);
-             Line(720,300,920,360,18,6,1);  
+             Line(480,300,220,360,18,9,1);
+             Line(720,300,920,360,18,9,1);  
              if (dt_s(19,27))
              {
                stroke(black,alpha);
@@ -756,24 +751,24 @@ void scene_4()
                if (dt_s(23,27))
                {
 //                 fill(70,114,196);
-                 fade(23,4,1,1,70,114,196);
+                 fade(23,4,1,0,70,114,196);
                  Text(20,500,480,"0x256d8 pwd");
                  String tem[]={"i_mode","i_uid","i_size","i_mtime","i_zone[9]","i_wait","..."};
                  for (int i=0;i<7;i++)
                  {
                     //fill(204, 255, 255);
-                    fade(23,4,1,1,204, 255, 255);
+                    fade(23,4,1,0,204, 255, 255);
                     //stroke(black,black,black,alpha);
                     rect(600,460+50*i,190,50);
-                    fade(23,4,1,1,70,114,196);
+                    fade(23,4,1,0,70,114,196);
                     //fill(70,114,196);
                     Text_box(600,460+50*i,190,50,20,tem[i]);
                  }
                }
-               if (dt_s(24,27))
+               if (dt_s(25,27))
                {
                  int tx=1000-790,ty=300-680;
-                 double time=(double)(mtime()-22000)/3000;
+                 double time=(double)(mtime()-25000)/2000;
                  arrow(790,680,(int)(790+tx*time),(int)(680+ty*time),black,black,black);
                }
              }
@@ -824,7 +819,7 @@ void scene_4()
              strokeWeight(1);
        }
     }
-    if (mtime()>26970)stop(); 
+   // if (mtime()>26970)stop(); 
 }
 
 void scene_5()
@@ -835,6 +830,24 @@ void scene_5()
     if (time()>=time_n){frame_index++;frame_index%=time_f.length;time_n=time_f[frame_index];}
     fill(black);textAlign(LEFT,TOP);
     Text(24,0,0,"Scene_5,frame_"+str(frame_index));  
+    Text(24,0,24,"time="+str(float(millis()/100)/10)+" s");
+    Text(24,0,24*2,"L_stime="+str(time())+",L_mtime="+str(mtime()));
+    fill(white);
+    
+    switch(frame_index)
+    {
+      case 0:stop();break;
+    }
+}
+
+void scene_6()
+{  
+    int[] time_f={1};
+    if (time()==0) frame_index=0;
+    int time_n=time_f[frame_index];
+    if (time()>=time_n){frame_index++;frame_index%=time_f.length;time_n=time_f[frame_index];}
+    fill(black);textAlign(LEFT,TOP);
+    Text(24,0,0,"Scene_6,frame_"+str(frame_index));  
     Text(24,0,24,"time="+str(float(millis()/100)/10)+" s");
     Text(24,0,24*2,"L_stime="+str(time())+",L_mtime="+str(mtime()));
     fill(white);
