@@ -10,8 +10,8 @@ static int black=0;
 static int s2ms=1000;
 static int alpha=255;
 
-static int[] scene={15,5,30,33,27,1,1};//15
-static int[] scene_time={15,20,50,83,110,111,112};
+static int[] scene={15,5,30,33,27,30,1};//15
+static int[] scene_time={15,20,50,83,110,140,141};
 int scene_index=0;
 int scene_time_now=scene_time[scene_index];
 
@@ -123,7 +123,7 @@ void cloud(int x,int y,float size)
 /***************************** The module of cloud ***************************/
 
 /***************************** The module of arrow ***************************/     
-void arrow(int sx,int sy,int ex,int ey,int r,int g,int b)
+void arrow(int sx,int sy,int ex,int ey,int r,int g,int b) //360 300 360 360
 {
      int arrow_size=5;
      strokeWeight(2);
@@ -135,6 +135,7 @@ void arrow(int sx,int sy,int ex,int ey,int r,int g,int b)
      double dy;
      if (dx<0.01)dy=5;else dy=dx*k;
      if (ex<=sx){dx=-dx;dy=-dy;}
+     if (ey>sy)dy=-dy;
      triangle((int)(ex+dx),(int)(ey+dy),(int)(ex-dy),(int)(ey+dx),(int)(ex+dy),(int)(ey-dx));
      strokeWeight(1); 
 }
@@ -823,12 +824,12 @@ void scene_4()
              strokeWeight(1);
        }
     }
-   // if (mtime()>26970)stop(); 
+    //if (mtime()>26970)stop(); 
 }
 
 void scene_5()
 {  
-    int[] time_f={7,10};
+    int[] time_f={7,13,16,22,30};
     if (time()==0) frame_index=0;
     int time_n=time_f[frame_index];
     if (time()>=time_n){frame_index++;frame_index%=time_f.length;time_n=time_f[frame_index];}
@@ -882,7 +883,11 @@ void scene_5()
     String s1="Then find out if there is this file in this directory";
     String s2="If the file was not found, it proves to be a file creation operation";
     String s3="We need to find an empty inode for it.";
-    String s4="First,find the super block of the device where this directory is located";
+    String s4="First,get the inode bitmap from the superblock.";
+    String s5="And find the first empty bit in the bitmap.";
+    String s6="Initialize the corresponding inode.";
+    String s7="Finally, add this item in the current directory.";
+    String s8="OK!The hello file has been successfully created!";
     switch(frame_index)
     {
       case 0:
@@ -900,29 +905,116 @@ void scene_5()
                 rect(950,330+i*30,110,30);
                 fade(1,10,1,0,black,black,black);
                 Text_box(950,330+i*30,110,30,16,tem[i]);
-                if((mtime()-1000)/300<18)
+                if((mtime()-1000)/300<17)
                   arrow(900,345+30*(mtime()-1000)/300,940,345+30*(mtime()-1000)/300,70,114,196);
               }
             }
             break;
       case 1:
             Text_penguin(s3,7,3,1);
-            Line(330,300,270,360,7,3,1);
-            Line(360,300,420,360,7,3,1);
-            if (dt_s(8,10))
+            Text_penguin(s4,10,13,1);
+            Line(330,300,270,360,7,6,1);
+            Line(360,300,420,360,7,6,1);
+            if (dt_s(8,13))
             {
-              fade(8,2,1,0,255,153,204);
-//          fill(255, 153, 204); 
-              stroke(0,0,0);rect(270,360,150,100);
-            //fill(black);
-              fade(8,2,1,0,black,black,black);
+              fade(8,5,1,0,255,153,204); 
+              stroke(0,0,0);rect(270,360,150,100);rect(270,460,150,50);
+              fade(8,5,1,0,black,black,black);
               Text_box(270,360,150,100,16,"05BA 2F30 0003 0008 0293 0000 1C00 1008 137F 0000 0000  ....   ");
               Text_box(295,280,100,100,18,"super block");
+              Text_box(270,460,150,50,16,"0x2F774 0xXXXXX 0xXXXXX 0xXXXXX");
+              if (dt_s(10,12))
+              {
+                 int dx=370-310,dy=310-460;
+                 double dt=(double)(mtime()-10000)/2000;
+                 arrow(310,460,310+(int)(dx*dt),(int)(460+dy*dt),black,black,black);
+              }
+              if (dt_s(12,13))arrow(310,460,370,310,black,black,black);
             }
             break;
-      case 2:stop();break;
+      case 2:Text_penguin(s5,13,3,1);
+             Line(360,300,300,360,13,3,1);
+             Line(390,300,510,360,13,3,1);  
+             if (dt_s(14,15))
+             {
+               for (int i=0;i<2;i++){
+                  fill(255, 255, 153);rect(300+i*30,360,30,30);fill(black);Text_box(300+i*30,360,30,30,16,"1");}
+               for (int i=2;i<7;i++){
+                  fill(255, 255, 153);rect(300+i*30,360,30,30);fill(black);Text_box(300+i*30,360,30,30,16,"0");}
+               for (int i=0;i<7;i++){
+                  fill(255, 255, 153);rect(300+i*30,390,30,30);fill(black);Text_box(300+i*30,390,30,30,16,"0");}
+               for (int i=0;i<7;i++){
+                  fill(255, 255, 153);rect(300+i*30,420,30,30);fill(black);Text_box(300+i*30,420,30,30,16,".");}
+             }
+             if (dt_s(15,16))
+             {
+               arrow(375,310,375,350,black,black,black);
+               for (int i=0;i<3;i++){
+                  fill(255, 255, 153);rect(300+i*30,360,30,30);fill(black);Text_box(300+i*30,360,30,30,16,"1");}
+               for (int i=3;i<7;i++){
+                  fill(255, 255, 153);rect(300+i*30,360,30,30);fill(black);Text_box(300+i*30,360,30,30,16,"0");}
+               for (int i=0;i<7;i++){
+                  fill(255, 255, 153);rect(300+i*30,390,30,30);fill(black);Text_box(300+i*30,390,30,30,16,"0");}
+               for (int i=0;i<7;i++){
+                  fill(255, 255, 153);rect(300+i*30,420,30,30);fill(black);Text_box(300+i*30,420,30,30,16,".");}
+             }
+             break;
+      case 3:Text_penguin(s6,16,6,1);
+             Line(690,300,580,360,16,6,1);
+             Line(930,300,1280,360,16,6,1);  
+             if (dt_s(17,22))
+             {
+               for (int i=0;i<14;i++){
+                  fill(204, 255, 255);rect(580+i*50,360,50,50);}
+               if(dt_s(18,22))
+               {
+                 Line(680,410,580,470,18,3,1);
+                 Line(730,410,830,470,18,3,1);  
+                 fill(black); 
+                 if (dt_s(19,22))
+                 {  
+                   line(680,410,580,470);
+                   line(730,410,830,470);   
+                   //line(480,300,220,360);
+                   //line(720,300,1020,360);
+                  // for (int i=0;i<14;i++){fill(204, 255, 255);rect(430+i*50,360,50,50);}
+                   String[] t={"i_mode","i_uid","i_size","i_mtime","i_gid","i_nlinks","i_zone[9]"};
+                   String[] n={"18C9","0000","00045404","5BFC1D33","00","01","0336~033D"};
+                   for (int i=0;i<7;i++){
+                    fill(204, 255, 255);rect(580,470+i*40,100,40);rect(680,470+i*40,150,40);
+                    fill(black);Text_box(580,470+i*40,100,40,20,t[i]);Text_box(680,470+i*40,150,40,20,n[i]);
+                    }
+                 }
+                }
+              }
+             break;
+      case 4:Text_penguin(s7,22,5,1);
+             Text_penguin(s8,27,3,1);
+             Line(990,300,950,330,22,5,1);
+             Line(1020,300,1060,330,22,5,1);
+             if (dt_s(23,27))
+             {
+               String newtem[]={".","..",".profile",".bash_history","hello.c","mtools.howto","examples","README","shoelace.tar.Z",
+                           "shoe","linux0.tgz","linux-0.00","gcclib140","MBR","part13","MBR3","mbr3","part14"};
+               for (int i=0;i<18;i++)
+               {
+                 fade(23,4,1,0,153,204,255);
+                 rect(950,330+i*30,110,30);
+                 fade(23,4,1,0,black,black,black);
+                 Text_box(950,330+i*30,110,30,16,newtem[i]);
+               }
+               if (dt_s(25,27))
+               {
+                   fade(25,2,1,0,153,204,255);
+                   rect(950,330+18*30,110,30);
+                   fade(25,2,1,0,black,black,black);
+                   Text_box(950,330+18*30,110,30,16,"hello");
+               }
+             }
+             break;
+      case 5:stop();break;
     }
-    if (mtime()>9900) stop();
+   // if (mtime()>29900) stop();
 }
 
 void scene_6()
