@@ -600,6 +600,7 @@ void scene_4()
     Text_box(600,150,100,100,16,"60.56MB");
     line(440,190,300,250);
     line(840,190,1200,250);
+    
     int[] box_x={300,330,360,450,690,930};
     int box_y=250,box_h=50,box_w=30;
     fill(255, 204, 153); stroke(0,0,0);rect(box_x[0],box_y,box_w,box_h);  
@@ -853,19 +854,21 @@ void scene_5()
     line(440,190,300,250);
     line(840,190,1200,250);
          
-    int[] box_x={300,330,360,390,480,720};
+    int[] box_x={300,330,360,450,690,930};
     int box_y=250,box_h=50,box_w=30;
     fill(255, 204, 153); stroke(0,0,0);rect(box_x[0],box_y,box_w,box_h);  
     fill(255, 153, 204); stroke(0,0,0);rect(box_x[1],box_y,box_w,box_h);
-    fill(255, 255, 153); stroke(0,0,0);rect(box_x[2],box_y,box_w,box_h);
-    fill(204, 255, 204); stroke(0,0,0);
+    fill(255, 255, 153); stroke(0,0,0);
     for (int i=0;i<3;i++)
+        rect(box_x[2]+i*box_w,box_y,box_w,box_h);
+    fill(204, 255, 204); stroke(0,0,0);
+    for (int i=0;i<8;i++)
         rect(box_x[3]+i*box_w,box_y,box_w,box_h);
     fill(204, 255, 255); stroke(0,0,0);
     for (int i=0;i<8;i++)
         rect(box_x[4]+i*box_w,box_y,box_w,box_h);
     fill(153, 204, 255); stroke(0,0,0);
-    for (int i=0;i<16;i++)
+    for (int i=0;i<9;i++)
         rect(box_x[5]+i*box_w,box_y,box_w,box_h);
         
      fill(white);
