@@ -89,7 +89,7 @@ log("{\"module\":\"file_system\",\"file\":\"%s\",\"function\":\"sys_write\",\"li
 		return -EINVAL;
 	if (!count)
 		return 0;
-	log("{\"module\":\"file_system\",\"file\":\"%s\",\"function\":\"sys_write\",\"line\":%d,\"provider\":\"wws\",\"time\":%d,\n\"data\":{\"Event\":\"write a file\",\"fd\":%d,\"f_node\":%d,\"count\":%d}}\n",__FILE__,__LINE__,jiffies,fd,file->f_inode,count);
+	log("{\"module\":\"file_system\",\"file\":\"%s\",\"function\":\"sys_write\",\"line\":%d,\"provider\":\"wws\",\"time\":%d,\n\"data\":{\"Event\":\"write a file\",\"fd\":%d,\"file\":%x,\"f_node\":%d,\"count\":%d}}\n",__FILE__,__LINE__,jiffies,fd,file,file->f_inode,count);
 	log("{\"module\":\"file_system\",\"file\":\"%s\",\"function\":\"sys_write\",\"line\":%d,\"provider\":\"wws\",\"time\":%d,\n\"data\":{\"Event\":\"judege_file_type:pipe\",\"inode->pipe\":%d}}\n",__FILE__,__LINE__,jiffies,inode->i_pipe);
 	inode=file->f_inode;
 	if (inode->i_pipe)
