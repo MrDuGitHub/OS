@@ -10,8 +10,8 @@ static int black=0;
 static int s2ms=1000;
 static int alpha=255;
 
-static int[] scene     ={14, 5,30,33, 35,31,   6,  1};//14
-static int[] scene_time={14,19,49,82,117,148,154,155};
+static int[] scene     ={14, 5,30,33, 35,31,  12,  1};//14
+static int[] scene_time={14,19,49,82,117,148,160,161};
 int scene_index=0;
 int scene_time_now=scene_time[scene_index];
 
@@ -1027,7 +1027,7 @@ void scene_5()
 
 void scene_6()
 {  
-    int[] time_f={6,1};
+    int[] time_f={7,12};
     if (time()==0) frame_index=0;
     int time_n=time_f[frame_index];
     if (time()>=time_n){frame_index++;frame_index%=time_f.length;time_n=time_f[frame_index];}
@@ -1081,61 +1081,80 @@ void scene_6()
     
     String s1="Now,we can fill in the contents of the file table.";
     String s2="And return the handle of the newly created file.";
+    String s3="When you want to open the file,";
+    String s4="you can find it in this directory and eventually return its handle.";
+    
     switch(frame_index)
     {
-      case 0:Text_penguin(s1,0,3,1);
-             Text_penguin(s2,3,3,1);
+      case 0:Text_penguin(s1,0,4,1);
+             Text_penguin(s2,4,3,1);
              strokeWeight(2);fill(white);
-             line_fade(0,6,2,0,70, 114, 196);
-             fade(0,6,2,0,70,114,196);Text_box(615,440,100,100,24,"filp");fill(white);
-             for (int i=0;i<3;i++)
+             line_fade(0,7,2,0,70, 114, 196);
+             fade(0,7,2,0,70,114,196);Text_box(615,440,100,100,24,"filp");fill(white);
+            /* for (int i=0;i<3;i++)
              {
-                 rect(580,520+i*38,35,38); fade(0,6,2,0,70,114,196);Text_box(580,520+i*38,35,38,16,str(i));fill(white);
-                 rect(615,520+i*38,100,38);fade(0,6,2,0,70,114,196);Text_box(615,520+i*38,100,38,16,"0x27730");fill(white);
+                 rect(580,520+i*38,35,38); fade(0,7,2,0,70,114,196);Text_box(580,520+i*38,35,38,16,str(i));fill(white);
+                 rect(615,520+i*38,100,38);fade(0,7,2,0,70,114,196);Text_box(615,520+i*38,100,38,16,"0x27730");fill(white);
              }
-             rect(580,520+3*38,35,38); fade(0,6,2,0,70,114,196);Text_box(580,520+3*38,35,38,16,str(3));fill(white);
-             rect(615,520+3*38,100,38);fade(0,6,2,0,70,114,196);Text_box(615,520+3*38,100,38,16,"0x27740");fill(white);
-             rect(580,520+4*38,35,50); fade(0,6,2,0,70,114,196);Text_box(580,520+4*38,35,50,16,"");fill(white);
-             rect(615,520+4*38,100,50);fade(0,6,2,0,70,114,196);Text_box(615,520+4*38,100,50,10,".\n.\n.\n");fill(white);
-             rect(580,532+5*38,35,38); fade(0,6,2,0,70,114,196);Text_box(580,532+5*38,35,38,16,"19");fill(white);
-             rect(615,532+5*38,100,38);fade(0,6,2,0,70,114,196);Text_box(615,531+5*38,100,38,16,"0x0");fill(white);
+             rect(580,520+3*38,35,38); fade(0,7,2,0,70,114,196);Text_box(580,520+3*38,35,38,16,str(3));fill(white);
+             rect(615,520+3*38,100,38);fade(0,7,2,0,70,114,196);Text_box(615,520+3*38,100,38,16,"0x27740");fill(white);
+             rect(580,520+4*38,35,50); fade(0,7,2,0,70,114,196);Text_box(580,520+4*38,35,50,16,"");fill(white);
+             rect(615,520+4*38,100,50);fade(0,7,2,0,70,114,196);Text_box(615,520+4*38,100,50,10,".\n.\n.\n");fill(white);
+             rect(580,532+5*38,35,38); fade(0,7,2,0,70,114,196);Text_box(580,532+5*38,35,38,16,"19");fill(white);
+             rect(615,532+5*38,100,38);fade(0,7,2,0,70,114,196);Text_box(615,531+5*38,100,38,16,"0x0");fill(white);
+            */
+             rect(535,520+0*38,35,38); fade(0,7,2,0,70,114,196);Text_box(535,520+0*38,35,38,16,"0");fill(white);
+             rect(570,520+0*38,150,38);fade(0,7,2,0,70,114,196);Text_box(570,520+0*38,150,38,16,"0x27730(stdin)");fill(white);
+             rect(535,520+1*38,35,38); fade(0,7,2,0,70,114,196);Text_box(535,520+1*38,35,38,16,"1");fill(white);
+             rect(570,520+1*38,150,38);fade(0,7,2,0,70,114,196);Text_box(570,520+1*38,150,38,16,"0x27730(stdout)");fill(white);
+             rect(535,520+2*38,35,38); fade(0,7,2,0,70,114,196);Text_box(535,520+2*38,35,38,16,"2");fill(white);
+             rect(570,520+2*38,150,38);fade(0,7,2,0,70,114,196);Text_box(570,520+2*38,150,38,16,"0x27730(stderr)");fill(white);
+             rect(535,520+3*38,35,38); fade(0,7,2,0,70,114,196);Text_box(535,520+3*38,35,38,16,"3");fill(white);
+             rect(570,520+3*38,150,38);fade(0,7,2,0,70,114,196);Text_box(570,520+3*38,150,38,16,"0x27740(hello)");fill(white);
+             rect(535,520+4*38,35,50); fade(0,7,2,0,70,114,196);Text_box(535,520+4*38,35,50,16,"");fill(white);
+             rect(570,520+4*38,150,50);fade(0,7,2,0,70,114,196);Text_box(570,520+4*38,150,50,10,".\n.\n.\n");fill(white);
+             rect(535,532+5*38,35,38); fade(0,7,2,0,70,114,196);Text_box(535,532+5*38,35,38,16,"19");fill(white);
+             rect(570,532+5*38,150,38);fade(0,7,2,0,70,114,196);Text_box(570,531+5*38,150,38,16,"0x0(NULL)");fill(white);
+ 
              strokeWeight(1);
              
-             fade(0,6,2,0,70, 114, 196);
-             line_fade(0,6,2,0,70, 114, 196);
+             fade(0,7,2,0,70, 114, 196);
+             line_fade(0,7,2,0,70, 114, 196);
              strokeWeight(2);
              Text_box(820+6*40,450,100,100,20,"File table");                          
              fill(white);
              for (int i=0;i<15;i++)
              rect(820+i*40,520,40,30);        
-             Line(900,550,850,630,0,6,0);
-             Line(940,550,990,630,0,6,0);
+             Line(900,550,850,630,0,7,0);
+             Line(940,550,990,630,0,7,0);
              String[] tem={"f_mode","f_flags","f_count","f_inode","off_t"};
              for (int i=0;i<5;i++)
              {
                fill(white);
               // fade(0,3,2,0,70, 114, 196);
-               line_fade(0,6,2,0,70, 114, 196);
+               line_fade(0,7,2,0,70, 114, 196);
                rect(850,630+i*40,80,40);rect(930,630+i*40,60,40);
-               fade(0,6,2,0,70, 114, 196);
+               fade(0,7,2,0,70, 114, 196);
                Text_box(850,630+i*40,80,40,18,tem[i]);
              }
              Text_box(930,630+2*40,60,40,20,"0");
-             if(dt_s(2,6))
+             if(dt_s(4,7))
              {
                arrow(740,540+38*3,830,650,70,114,196);
                String s[]={"0x8810","577","0","xxxx","xxxx"};
                for (int i=0;i<5;i++)
                {
-                 fade(2,4,1,0,70, 114, 196);
+                 fade(4,3,1,0,70, 114, 196);
                  Text_box(930,630+i*40,60,40,20,s[i]);
                }
              }
              strokeWeight(1);
              break;
-      case 1:stop();break;
+      case 1:Text_penguin(s3,7,2,1);
+             Text_penguin(s4,9,3,1);
+             break;
     }
- //   if (mtime()>5900)stop();
+  // if (mtime()>11900)stop();
 }
 
 void scene_7()
