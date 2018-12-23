@@ -55,7 +55,7 @@ void Loop()
 {
     switch (scene_index)
     {
-        case 0: scene_0();break;
+        case 0: scene_4();break;
         case 1: scene_1();break;
         case 2: scene_2();break;
         case 3: scene_3();break;
@@ -448,8 +448,8 @@ void scene_3()
                Text_penguin(s6,15,3,1);
                //fill(255, 153, 204); stroke(0,0,0);rect(270,480,150,30);
                fill(black);
-               rect(250,480,100,100);
-               Text_box(240,450,210,240,15,"05BA:iNode_number           2F30:logical_blocks        0003:inode_bitmap_blocks   0008:logical_bitmap_blocks 0293:first_logical_block   0000:log                  1c00_1008:max_length            137f:magic_number         ");
+              // rect(250,480,100,100);
+              // Text_box(240,450,210,240,15,"05BA:iNode_number           2F30:logical_blocks        0003:inode_bitmap_blocks   0008:logical_bitmap_blocks 0293:first_logical_block   0000:log                  1c00_1008:max_length            137f:magic_number         ");
                String[] name={"iNode number","logical blocks","inode bitmap blocks","logical bitmap blocks","first logical block","log","max_length","magic number"};
                String[] num={"1466","12080","3","8","659","0","469766152","4991"};
                String[] numo={"05BA","2F30","0003","0008","0293","0000","1C00 1008","137F"};
@@ -457,27 +457,30 @@ void scene_3()
                int ind=6;
                for (int i=0;i<6;i++)
                {
-                  fill(255, 153, 204);
+                  fade(15,3,1,0,255,153,204);
+                  //fill(255, 153, 204);
                   rect(200,480+30*i,180,30);
                   rect(380,480+30*i,100,30);
-                  rect(460,480+30*i,80,30);
-                  fill(black);
+                  rect(480,480+30*i,80,30);
+                  fade(15,3,1,0,black,black,black);
+                  //fill(black);
                   Text_box(200,480+30*i,180,30,16,name[i]);
                   Text_box(380,480+30*i,80,30,16,num[i]);
-                  Text_box(460,480+30*i,80,30,16,numo[i]);
+                  Text_box(480,480+30*i,80,30,16,numo[i]);
                }
-               fill(255, 153, 204);rect(200,480+30*6,180,60);rect(380,480+30*6,100,60);rect(460,480+30*6,80,60);
-               fill(black);Text_box(200,480+30*6,180,60,16,name[6]);
-               Text_box(380,480+30*6,80,60,16,num[6]);Text_box(460,480+30*6,80,60,16,numo[6]);
-               fill(255, 153, 204);rect(200,480+30*8,180,30);rect(380,480+30*8,100,30);rect(460,480+30*8,80,30);
-               fill(black);Text_box(200,480+30*8,180,30,16,name[7]);
-               Text_box(380,480+30*8,80,30,16,num[7]);Text_box(460,480+30*8,80,30,16,numo[7]);
+               fade(15,3,1,0,255,153,204);rect(200,480+30*6,180,60);rect(380,480+30*6,100,60);rect(480,480+30*6,80,60);
+               fade(15,3,1,0,black,black,black);Text_box(200,480+30*6,180,60,16,name[6]);
+               Text_box(380,480+30*6,80,60,16,num[6]);Text_box(480,480+30*6,80,60,16,numo[6]);
+               fade(15,3,1,0,255,153,204);rect(200,480+30*8,180,30);rect(380,480+30*8,100,30);rect(480,480+30*8,80,30);
+               fade(15,3,1,0,black,black,black);Text_box(200,480+30*8,180,30,16,name[7]);
+               Text_box(380,480+30*8,80,30,16,num[7]);Text_box(480,480+30*8,80,30,16,numo[7]);
            }
            break;
       case 2:fill(black);
              Text_penguin(s7,18,3,1);
              Line(360,300,300,360,18,3,1);
-             Line(450,300,510,360,18,3,1);  
+             Line(450,300,510,360,18,3,1);
+             Text_box(350,300,100,30,20,"3kb");
              if (dt_s(19,21))
              {
                for (int i=0;i<7;i++){
@@ -491,7 +494,8 @@ void scene_3()
       case 3:fill(black);
              Text_penguin(s8,21,3,1);
              Line(450,300,390,360,21,3,1);
-             Line(690,300,750,360,21,3,1);  
+             Line(690,300,750,360,21,3,1);
+             Text_box(520,300,100,30,20,"8kb");
              if (dt_s(22,24))
              {
                for (int i=0;i<12;i++){
@@ -573,7 +577,7 @@ void scene_3()
 
 void scene_4()
 {  
-    int[] time_f={3,6,9,12,18,27};
+    int[] time_f={3,9,12,18,27};
     if (time()==0) frame_index=0;
     int time_n=time_f[frame_index];
     if (time()>=time_n){frame_index++;frame_index%=time_f.length;time_n=time_f[frame_index];}
@@ -640,38 +644,39 @@ void scene_4()
              fill(black);fade(3,3,1,0,0,0,0);
              Text_box(220,520,360,360,24,"TASK");
              strokeWeight(1);
-             break;
-      case 2:fill(black);
+             
+    //  case 2:fill(black);
              Text_penguin(s3,6,3,1);
              strokeWeight(2);fill(white);
-             line_fade(6,3,1,0,70, 114, 196);
-             fade(6,3,1,0,70,114,196);Text_box(615,440,100,100,24,"filp");fill(white);
-             for (int i=0;i<3;i++)
-             {
-                 rect(580,520+i*38,35,38); fade(6,3,1,0,70,114,196);Text_box(580,520+i*38,35,38,16,str(i));fill(white);
-                 rect(615,520+i*38,100,38);fade(6,3,1,0,70,114,196);Text_box(615,520+i*38,100,38,16,"0x27730");fill(white);
-             }
-             rect(580,520+3*38,35,38); fade(6,3,1,0,70,114,196);Text_box(580,520+3*38,35,38,16,str(3));fill(white);
-             rect(615,520+3*38,100,38);fade(6,3,1,0,70,114,196);Text_box(615,520+3*38,100,38,16,"0x0");fill(white);
-             rect(580,520+4*38,35,50); fade(6,3,1,0,70,114,196);Text_box(580,520+4*38,35,50,16,"");fill(white);
-             rect(615,520+4*38,100,50);fade(6,3,1,0,70,114,196);Text_box(615,520+4*38,100,50,10,".\n.\n.\n");fill(white);
-             rect(580,532+5*38,35,38); fade(6,3,1,0,70,114,196);Text_box(580,532+5*38,35,38,16,"19");fill(white);
-             rect(615,532+5*38,100,38);fade(6,3,1,0,70,114,196);Text_box(615,531+5*38,100,38,16,"0x0");fill(white);
+             line_fade(3,6,1,0,70, 114, 196);
+             fade(3,6,1,0,70,114,196);Text_box(570,440,100,100,24,"filp");fill(white);
+             rect(535,520+0*38,35,38); fade(3,6,1,0,70,114,196);Text_box(535,520+0*38,35,38,16,"0");fill(white);
+             rect(570,520+0*38,150,38);fade(3,6,1,0,70,114,196);Text_box(570,520+0*38,150,38,16,"0x27730(stdin)");fill(white);
+             rect(535,520+1*38,35,38); fade(3,6,1,0,70,114,196);Text_box(535,520+1*38,35,38,16,"1");fill(white);
+             rect(570,520+1*38,150,38);fade(3,6,1,0,70,114,196);Text_box(570,520+1*38,150,38,16,"0x27730(stdout)");fill(white);
+             rect(535,520+2*38,35,38); fade(3,6,1,0,70,114,196);Text_box(535,520+2*38,35,38,16,"2");fill(white);
+             rect(570,520+2*38,150,38);fade(3,6,1,0,70,114,196);Text_box(570,520+2*38,150,38,16,"0x27730(stderr)");fill(white);
+             rect(535,520+3*38,35,38); fade(3,6,1,0,70,114,196);Text_box(535,520+3*38,35,38,16,"3");fill(white);
+             rect(570,520+3*38,150,38);fade(3,6,1,0,70,114,196);Text_box(570,520+3*38,150,38,16,"0x0(NULL)");fill(white);
+             rect(535,520+4*38,35,50); fade(3,6,1,0,70,114,196);Text_box(535,520+4*38,35,50,16,"");fill(white);
+             rect(570,520+4*38,150,50);fade(3,6,1,0,70,114,196);Text_box(570,520+4*38,150,50,10,".\n.\n.\n");fill(white);
+             rect(535,532+5*38,35,38); fade(3,6,1,0,70,114,196);Text_box(535,532+5*38,35,38,16,"19");fill(white);
+             rect(570,532+5*38,150,38);fade(3,6,1,0,70,114,196);Text_box(570,531+5*38,150,38,16,"0x0(NULL)");fill(white);
              strokeWeight(1);
              break;
-      case 3:fill(black);
+      case 2:fill(black);
              Text_penguin(s4,9,3,1);
              strokeWeight(2);stroke(70, 114, 196);fill(white);
-             rect(615,520+3*38,100,38);fill(70,114,196);stroke(70, 114, 196,alpha);
-             if (dt_m(9000,9600+600*3))Text_box(615,520+3*38,100,38,16,"0x0");
-             else arrow(640,540+38*3,690,540+38*3,70,114,196);
+             rect(570,520+3*38,150,38);fill(70,114,196);stroke(70, 114, 196,alpha);
+             if (dt_m(9000,9600+600*3))Text_box(570,520+3*38,150,38,16,"0x0(NULL)");
+             else arrow(615,540+38*3,665,540+38*3,70,114,196);
              fill(white);
              strokeWeight(1);
              for (int i=0;i<4;i++)
                  if (dt_m(9000+600*i,9600+600*i))
                    arrow(800,540+38*i,750,540+38*i,70,114,196);
              break;
-      case 4:fill(black);
+      case 3:fill(black);
              Text_penguin(s5,12,3,1);
              Text_penguin(s6,15,3,1);
              fade(12,6,1,0,70, 114, 196);
@@ -707,7 +712,7 @@ void scene_4()
              }
              strokeWeight(1);
              break; 
-      case 5:fill(black);
+      case 4:fill(black);
              Text_penguin(s7,18,3,1);
              Text_penguin(s8,21,3,1);
              if(dt_s(18,20))
@@ -776,7 +781,7 @@ void scene_4()
                }
              }
              break;
-      case 6:stop();  
+      case 5:stop();  
              break;
     }
     if (time()>=6)
@@ -792,17 +797,21 @@ void scene_4()
        {
              strokeWeight(2);fill(white);
              stroke(70, 114, 196);
-             fill(70,114,196);Text_box(615,440,100,100,24,"filp");fill(white);
-             for (int i=0;i<3;i++)
-             {
-                 rect(580,520+i*38,35,38); fill(70,114,196);Text_box(580,520+i*38,35,38,16,str(i));fill(white);
-                 rect(615,520+i*38,100,38);fill(70,114,196);Text_box(615,520+i*38,100,38,16,"0x27730");fill(white);
-             }
-             rect(580,520+3*38,35,38); fill(70,114,196);Text_box(580,520+3*38,35,38,16,str(3));fill(white);
+             int tx1=570,tx2=535;
+             fill(70,114,196);Text_box(tx1,440,100,100,24,"filp");fill(white);
+             
+             rect(tx2,520+0*38,35,38); fill(70,114,196);Text_box(tx2,520+0*38,35,38,16,str(0));fill(white);
+             rect(tx1,520+0*38,150,38);fill(70,114,196);Text_box(tx1,520+0*38,150,38,16,"0x27730(stdin)");fill(white);
+             rect(tx2,520+1*38,35,38); fill(70,114,196);Text_box(tx2,520+1*38,35,38,16,str(1));fill(white);
+             rect(tx1,520+1*38,150,38);fill(70,114,196);Text_box(tx1,520+1*38,150,38,16,"0x27730(stdout)");fill(white);
+             rect(tx2,520+2*38,35,38); fill(70,114,196);Text_box(tx2,520+2*38,35,38,16,str(2));fill(white);
+             rect(tx1,520+2*38,150,38);fill(70,114,196);Text_box(tx1,520+2*38,150,38,16,"0x27730(stderr)");fill(white);
+             
+             rect(tx2,520+3*38,35,38); fill(70,114,196);Text_box(tx2,520+3*38,35,38,16,str(3));fill(white);
              if (dt_s(12,18))
              {
-               rect(615,520+3*38,100,38);fill(70,114,196);
-               if (dt_s(12,16))arrow(640,540+38*3,690,540+38*3,70,114,196);
+               rect(tx1,520+3*38,150,38);fill(70,114,196);
+               if (dt_s(12,16))arrow(615,540+38*3,665,540+38*3,70,114,196);
                if (dt_s(16,17))
                { 
                  int tem=mtime()-16000;
@@ -811,18 +820,18 @@ void scene_4()
                  arrow(640,540+38*3,690+(int)dx,540+38*3+(int)dy,70,114,196);
                }
                if (dt_s(17,18)) arrow(740,540+38*3,830,650,70,114,196);
-               if (dt_s(17,18)) Text_box(615,520+3*38,100,38,16,"0x27740");
+               if (dt_s(17,18)) Text_box(tx1,520+3*38,150,38,16,"0x27740(?)");
              }
              fill(white);
              strokeWeight(2);
-             rect(580,520+4*38,35,50); fill(70,114,196);Text_box(580,520+4*38,35,50,16,"");fill(white);
-             rect(615,520+4*38,100,50);fill(70,114,196);Text_box(615,520+4*38,100,50,10,".\n.\n.\n");fill(white);
-             rect(580,532+5*38,35,38); fill(70,114,196);Text_box(580,532+5*38,35,38,16,"19");fill(white);
-             rect(615,532+5*38,100,38);fill(70,114,196);Text_box(615,531+5*38,100,38,16,"0x0");fill(white);
+             rect(tx2,520+4*38,35,50); fill(70,114,196);Text_box(tx2,520+4*38,35,50,16,"");fill(white);
+             rect(tx1,520+4*38,150,50);fill(70,114,196);Text_box(tx1,520+4*38,150,50,10,".\n.\n.\n");fill(white);
+             rect(tx2,532+5*38,35,38); fill(70,114,196);Text_box(tx2,532+5*38,35,38,16,"19");fill(white);
+             rect(tx1,532+5*38,150,38);fill(70,114,196);Text_box(tx1,531+5*38,150,38,16,"0x0(NULL)");fill(white);
              strokeWeight(1);
        }
     }
-    //if (mtime()>26970)stop(); 
+    if (mtime()>18970)stop(); 
 }
 
 void scene_5()
