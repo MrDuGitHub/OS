@@ -10,8 +10,8 @@ static int black=0;
 static int s2ms=1000;
 static int alpha=255;
 
-static int[] scene={15,5,30,33,27,30,6,1};//15
-static int[] scene_time={15,20,50,83,110,140,146,147};
+static int[] scene={50,5,30,33,27,30,6,1};//14
+static int[] scene_time={50,19,49,82,109,139,145,146};
 int scene_index=0;
 int scene_time_now=scene_time[scene_index];
 
@@ -176,7 +176,7 @@ void Text_penguin(String s,float fade_bt,float fade_st,float fade_t)
 int frame_index=0;
 void scene_0()
 {
-    int[] time_f={2,5,8,11,14,15};
+    int[] time_f={2,5,8,11,14};
     if (time()==0) frame_index=0;
     int time_n=time_f[frame_index];
     if (time()>=time_n){frame_index++;frame_index%=time_f.length;time_n=time_f[frame_index];}
@@ -192,8 +192,8 @@ void scene_0()
     penguin_size=1;
     
     String s1="Hello!\nWelcome to the world of Linux 0.11!";
-    String s2="Today,I want to introduce you to the file system."; 
-    String s3="It will be very interesting.";
+    String s2="Today,I will introduce you to the file system."; 
+    String s3="It will be interesting.";
     String s4="So,let's begin~";
     switch(frame_index)
     {
@@ -202,7 +202,6 @@ void scene_0()
       case 2:Text_penguin(s2,time_f[frame_index-1],3,1);break;
       case 3:Text_penguin(s3,time_f[frame_index-1],3,1);break;
       case 4:Text_penguin(s4,time_f[frame_index-1],3,1);break;
-      case 5:break;
     }
 }
 
@@ -411,6 +410,7 @@ void scene_3()
              fade(0,9,2,0,255, 255, 153);line_fade(0,9,2,0,0,0,0);
              rect(840,150,400,40);
              fill(black);
+             fade(0,9,2,0,black,black,black);
              Text_box(400-30,80,100,100,16,"boot section");
              Text_box(600,50,400,100,24,"hdc-0.11.img 121.72MB");
              if (dt_s(3,6))Text_box(400-30,150,100,100,16,"1KB");
@@ -422,14 +422,11 @@ void scene_3()
              }
              break;
       case 1:fill(black);
-             if (dt_s(9,12))
-             {
-               Text_penguin(s4,9,3,1);
-               Text_box(200,225,100,100,16,"boot block");
-             }
+             Text_penguin(s4,9,3,1);
+             Text_penguin(s5,12,3,1);
+             if (dt_s(9,12))Text_box(200,225,100,100,16,"boot block");
              if (dt_s(12,15))
              {
-               Text_penguin(s5,12,3,1);
                Text_box(295,280,100,100,18,"super block");
                if (dt_s(12,14))
                {
