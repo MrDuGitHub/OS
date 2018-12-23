@@ -10,8 +10,8 @@ static int black=0;
 static int s2ms=1000;
 static int alpha=255;
 
-static int[] scene     ={15, 5,30,33, 35,31,   6,  1};//14
-static int[] scene_time={15,19,49,82,117,148,154,155};
+static int[] scene     ={14, 5,30,33, 35,31,   6,  1};//14
+static int[] scene_time={14,19,49,82,117,148,154,155};
 int scene_index=0;
 int scene_time_now=scene_time[scene_index];
 
