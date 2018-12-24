@@ -59,13 +59,13 @@ int file_write(struct m_inode * inode, struct file * filp, char * buf, int count
  */
 
 
-char ns[50];
+/*char ns[50];
 for(int i=0;i<count;++i)
 {
 ns[i]=get_fs_byte(buf++);
-}
-ns[count-1]='\0';
-log("{\"module\":\"file_system\",\"file\":\"%s\",\"function\":\"file_write\",\"line\":%d,\"provider\":\"wws\",\"time\":%d,\n\"data\":{\"Event\":\"buffer\",\"buffer\":\"%s\",\"flag\":\"%d\"}}\n",__FILE__,__LINE__,jiffies,ns,filp->f_flags);
+}*/
+//ns[count-1]='\0';
+log("{\"module\":\"file_system\",\"file\":\"%s\",\"function\":\"file_write\",\"line\":%d,\"provider\":\"wws\",\"time\":%d,\n\"data\":{\"Event\":\"buffer\",\"buffer\":\"%s\",\"flag\":\"%d\"}}\n",__FILE__,__LINE__,jiffies,"",filp->f_flags);
 if (filp->f_flags & O_APPEND)
 {
 		pos = inode->i_size;
@@ -105,7 +105,7 @@ log("{\"module\":\"file_system\",\"file\":\"%s\",\"function\":\"file_write\",\"l
 			*(p++) = get_fs_byte(buf++);
 			name[in++]=*(p-1);
 		}
-name[in-1]='\0';
+name[in]='\0';
 log("{\"module\":\"file_system\",\"file\":\"%s\",\"function\":\"file_write\",\"line\":%d,\"provider\":\"wws\",\"time\":%d,\n\"data\":{\"Event\":\"current\",\"count\":%d,\"content\":\"%s\"}}\n",__FILE__,__LINE__,jiffies,in,name);
 		brelse(bh);
 log("{\"module\":\"file_system\",\"file\":\"%s\",\"function\":\"file_write\",\"line\":%d,\"provider\":\"wws\",\"time\":%d,\n\"data\":{\"Event\":\"release_buffer\"}}\n",__FILE__,__LINE__,jiffies);
