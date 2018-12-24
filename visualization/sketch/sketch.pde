@@ -217,7 +217,7 @@ void scene_0()
       case 3:Text_penguin(s3,time_f[frame_index-1],3,1);break;
       case 4:Text_penguin(s4,time_f[frame_index-1],3,1);break;
     }
-    if (mtime()>900)stop();
+   // if (mtime()>900)stop();
 }
 
 void scene_1()
