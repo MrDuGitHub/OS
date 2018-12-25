@@ -11,16 +11,16 @@ static int s2ms=1000;
 static int alpha=255;
 
 
-static int[] scene     ={14, 5,30,33, 35, 31, 12, 34, 16, 23, 15,  5, 11};//14
-static int[] scene_time={14,19,49,82,117,148,160,194,210,233,248,253,264};
+static int[] scene     ={14, 5,30,33, 35, 31, 12, 34, 16, 23, 15,  5, 11,  1};//14
+static int[] scene_time={14,19,49,82,117,148,160,194,210,233,248,253,264,265};
 
 int scene_index=0;
 int scene_time_now=scene_time[scene_index];
 
 void setup() 
 {
-  size(1920, 1080);//size(2000, 1236);size(1000, 618);
-  //fullScreen();
+  //size(1920, 1080);//size(2000, 1236);size(1000, 618);
+  fullScreen();
   background(white);
   penguin = loadImage("penguin.jpg");
   imageMode(CENTER);
@@ -58,8 +58,6 @@ void Loop()
     {
 
         case 0:  scene_0(); break;
-
-
         case 1:  scene_1(); break;
         case 2:  scene_2(); break;
         case 3:  scene_3(); break;
@@ -70,10 +68,9 @@ void Loop()
         case 8:  scene_8(); break;
         case 9:  scene_9(); break;
         case 10: scene_10();break;
-
         case 11: scene_11();break;
         case 12: scene_12();break;
-
+        case 13: stop();
     }  
 }
 /******************************* The Main Loop *******************************/
@@ -199,7 +196,7 @@ void Text_penguin(String s,float fade_bt,float fade_st,float fade_t)
 int frame_index=0;
 void scene_0()
 {
-    int[] time_f={2,5,8,11,14};
+    int[] time_f={10,12,15,18,21,24};
     if (time()==0) frame_index=0;
     int time_n=time_f[frame_index];
     if (time()>=time_n){frame_index++;frame_index%=time_f.length;time_n=time_f[frame_index];}
@@ -209,7 +206,7 @@ void scene_0()
     Text(font_size,0,font_size*2,"L_stime="+str(time())+",L_mtime="+str(mtime()));
     fill(white);
 
-    penguin_fade(0,time_f[time_f.length-1],time_f[0],0);
+    penguin_fade(10,time_f[time_f.length-1],time_f[0],0);
     image(penguin,(size_X)/2,(size_Y)/2);
     penguin_X=(size_X)/2;penguin_Y=(size_Y)/2;
     penguin_size=1;
@@ -2258,7 +2255,7 @@ void scene_12()
     int time_n=time_f[frame_index];
     if (time()>=time_n){frame_index++;frame_index%=time_f.length;time_n=time_f[frame_index];}
     fill(black);textAlign(LEFT,TOP);
-    Text(font_size,0,0,"Scene_0,frame_"+str(frame_index)); 
+    Text(font_size,0,0,"Scene_12,frame_"+str(frame_index)); 
     Text(font_size,0,font_size,"time="+str(float(millis()/100)/10)+" s");
     Text(font_size,0,font_size*2,"L_stime="+str(time())+",L_mtime="+str(mtime()));
     fill(white);
