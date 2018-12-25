@@ -10,13 +10,8 @@ static int black=0;
 static int s2ms=1000;
 static int alpha=255;
 
-<<<<<<< HEAD
-static int[] scene     ={34, 16,23,33, 35,31,  12,  34,16,23};//14
-static int[] scene_time={34,50,73,82,117,148,160,194,210,233};
-=======
-static int[] scene     ={14, 5,30,33, 35, 31, 12, 34, 16, 23, 15};//14
-static int[] scene_time={14,19,49,82,117,148,160,194,210,233,248};
->>>>>>> 93bcc593bcbac3f5589910e2de88eb44543c9eb1
+static int[] scene     ={50, 5,30,33, 35, 31, 12, 34, 16, 23, 15,  5, 11};//14
+static int[] scene_time={50,19,49,82,117,148,160,194,210,233,248,253,264};
 int scene_index=0;
 int scene_time_now=scene_time[scene_index];
 
@@ -59,19 +54,7 @@ void Loop()
 {
     switch (scene_index)
     {
-<<<<<<< HEAD
-        case 0: scene_7();break;
-        case 1: scene_8();break;
-        case 2: scene_9();break;
-        case 3: scene_3();break;
-        case 4: scene_4();break;
-        case 5: scene_5();break;
-        case 6: scene_6();break;
-        case 7: scene_7();break;
-        case 8: scene_8();break;
-        case 9: scene_9();break;
-=======
-        case 0:  scene_0(); break;
+        case 0:  scene_8(); break;
         case 1:  scene_1(); break;
         case 2:  scene_2(); break;
         case 3:  scene_3(); break;
@@ -82,7 +65,8 @@ void Loop()
         case 8:  scene_8(); break;
         case 9:  scene_9(); break;
         case 10: scene_10();break;
->>>>>>> 93bcc593bcbac3f5589910e2de88eb44543c9eb1
+        case 11: scene_11();break;
+        case 12: scene_12();break;
     }  
 }
 /******************************* The Main Loop *******************************/
@@ -115,7 +99,7 @@ void penguin_fade(float base_t,float sum_t,float fade_t1,float fade_t2)
 void Line(int x1,int y1,int x2,int y2,int base_t,int sum_t,int t)
 {
     int dt=mtime()-base_t*s2ms;
-    if (dt>=sum_t*s2ms) return;
+    if (dt>=sum_t*s2ms||dt<0) return;
     int dx=x2-x1,dy=y2-y1;
     if (dt<t*s2ms)line(x1,y1,x1+dt*dx/(t*s2ms),y1+dt*dy/(t*s2ms));
     else line(x1,y1,x2,y2);
@@ -1165,7 +1149,7 @@ void scene_6()
 
 void scene_7()
 {
-    int[] time_f={3,6,9,16,24,26,31};
+    int[] time_f={3,6,9,16,24,29,30,34};
     if (time()==0) frame_index=0;
     int time_n=time_f[frame_index];
     if (time()>=time_n){frame_index++;frame_index%=time_f.length;time_n=time_f[frame_index];}
@@ -1217,6 +1201,8 @@ void scene_7()
     String s5="Next,judge the inode type, regular file";
     String s6="judge append or current pointer to append";
     String s7="pos/BLOCK_SIZE, create a new block";
+      String s8="jude the file is pipe file";
+    String s9="f_pos set zero";
    // String s8="find the super block, scan the first empty logic bit map";
     
     switch(frame_index)
@@ -1281,7 +1267,8 @@ void scene_7()
              strokeWeight(1);
              break; 
       case 4:fill(black);
-             Text_penguin(s5,21,2,1);
+        Text_penguin(s8,20,2,1);
+             Text_penguin(s5,22,2,1);
              stroke(black,alpha);
              Line(690,300,430,360,16,9,1);
              Line(930,300,1130,360,16,9,1);  
@@ -1293,8 +1280,8 @@ void scene_7()
              if (dt_s(18,24))
              {
                stroke(black,alpha);
-               Line(680,410,600,460,18,5,1);
-               Line(730,410,790,460,18,5,1);
+               Line(680,410,600,460,18,6,1);
+               Line(730,410,790,460,18,6,1);
                if (dt_s(19,24))
                {
                  fade(19,5,1,0,70,114,196);
@@ -1310,11 +1297,13 @@ void scene_7()
                  Text_box(700,460+50,100,50,18,"0");
                  Text_box(700,460,100,50,18,"100600");
                if (dt_s(20,21))arrow(850,460+70,800,460+70,70,114,196);
-               if (dt_s(21,22))arrow(850,460+20,800,460+20,70,114,196);   
+               if (dt_s(22,23))arrow(850,460+20,800,460+20,70,114,196);   
                }
              }
              break;     
       case 5:
+         Text_penguin(s6,24,2,1);
+           Text_penguin(s9,27,1,1);
              fill(black);
            
              strokeWeight(2);
@@ -1329,27 +1318,38 @@ void scene_7()
                  //if (dt_s(14,15)) arrow(880,630,880,580,70,114,196);
                 // if (dt_s(15,16)) arrow(920,630,920,580,70,114,196);
                         
-                   Line(900,550,850,630,27,11,0);
-                   Line(940,550,990,630,27,11,0);
+                   Line(900,550,850,630,24,11,0);
+                   Line(940,550,990,630,24,11,0);
                  
                      String[] tem={"f_mode","f_flags","f_count","f_inode","off_t","f_pos"};
                      for (int i=0;i<6;i++)
                      {
                        fill(white);
+                       // fade(19,5,1,0,204, 255, 255);
                        rect(850,630+i*40,80,40);rect(930,630+i*40,60,40);
                        fill(70,114,196);
+                      
                        Text_box(850,630+i*40,80,40,18,tem[i]);
                      }
+                    
                      Text_box(930,630+1*40,60,40,20,"577");
-                       Text_penguin(s6,27,3,1);
-                     if (dt_s(27,28)) 
+                     
+                     if (dt_s(25,26)) 
                      {
                        
                        arrow(1020,690,1000,690,70,114,196);
                          
                    }
-                     if (dt_s(28,29)) 
+                     if (dt_s(27,28))
+                     {
+                        fade(27,1,1,0,70,114,196);
                      Text_box(930,630+5*40,60,40,20,"0");
+                   }
+                         if (dt_s(28,29))
+                     {
+                        //fade(27,1,1,0,70,114,196);
+                     Text_box(930,630+5*40,60,40,20,"0");
+                   }
                     // Text_box(930,630+2*40,60,40,20,"0");
                    //arrow(680,540+38*3,830,650,70,114,196);
                   
@@ -1357,15 +1357,16 @@ void scene_7()
              
              strokeWeight(1);
             break;
-            
-      case 6:
+      case 6: 
+            break;
+      case 7:
            fill(black);
              Text_penguin(s7,30,3,1);
            //  Text_penguin(s8,21,3,1);
           
              stroke(black,alpha);
-             Line(690,300,430,360,18,9,1);
-             Line(930,300,1130,360,18,9,1);  
+             line(690,300,430,360);
+             line(930,300,1130,360);  
             
              
                stroke(black,alpha);
@@ -1398,7 +1399,7 @@ void scene_7()
                // if (dt_s(24,25)) arrow(850,460+20,800,460+20,70,114,196);
                  Text_box(700,460+50,100,50,20,"0");
                  Text_box(700,460+50*5,100,50,20,"769");
-                      if (dt_s(30,31))
+                      if (dt_s(31,34))
                {
                 
                  arrow(700+200,480+50*5,700+100,480+50*5,black,black,black);
@@ -1415,8 +1416,7 @@ void scene_7()
              
              break;
           
-      case 8:stop();  
-             break;
+     
     }
     if (time()>=6)
     {
@@ -1478,7 +1478,7 @@ void scene_7()
        }
        
        
-       if(dt_s(24,26))
+       if(dt_s(24,29))
        {
           strokeWeight(2);fill(white);
              stroke(70, 114, 196);
@@ -1496,22 +1496,8 @@ void scene_7()
              rect(615,520+4*38,100,50);fill(70,114,196);Text_box(615,520+4*38,100,50,10,".\n.\n.\n");fill(white);
              rect(580,532+5*38,35,38); fill(70,114,196);Text_box(580,532+5*38,35,38,16,"19");fill(white);
              rect(615,532+5*38,100,38);fill(70,114,196);Text_box(615,531+5*38,100,38,16,"0x0");fill(white);
-             if (dt_s(9,15))
-             {
-               //rect(300,520+3*38,100,38);
-               rect(615,520+3*38,100,38);fill(70,114,196);
-               if (dt_s(12,16))//arrow(640,540+38*3,690,540+38*3,70,114,196);
-              if (dt_s(16,17))
-               { 
-                int tem=mtime()-16000;
-                 double x=(double)tem/1000;
-                 double dx=(830-690)*x,dy=(650-540-38*3)*x;
-                 arrow(640,540+38*3,690+(int)dx,540+38*3+(int)dy,70,114,196);
-               }
-               if (dt_s(17,18)) arrow(740,540+38*1,830,650,70,114,196);
-             // if (dt_s(17,18)) Text_box(615,520+3*38,100,38,16,"0x27740");
-             }
-            // if(dt_s(18,19)
+     
+           
              fill(white);
              strokeWeight(2);
              rect(580,520+4*38,35,50); fill(70,114,196);Text_box(580,520+4*38,35,50,16,"");fill(white);
@@ -1519,29 +1505,8 @@ void scene_7()
              rect(580,532+5*38,35,38); fill(70,114,196);Text_box(580,532+5*38,35,38,16,"19");fill(white);
              rect(615,532+5*38,100,38);fill(70,114,196);Text_box(615,531+5*38,100,38,16,"0x0");fill(white);
              strokeWeight(1);
-       
        }
-       
-     //   arrow(790,680,(int)(790+tx*time),(int)(680+ty*time),black,black,black);
-       
-       
-    }
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-    // if (mtime()>34990) stop();
-     
+   }       
 }
 void scene_8()
 {  
@@ -2019,11 +1984,9 @@ void scene_9()
   }
     
     
-    if (mtime()>22900)stop();
-<<<<<<< HEAD
+  //  if (mtime()>22900)stop();
 }
-=======
-}
+
 void scene_10()
 {  
     int[] time_f={7,15};
@@ -2220,4 +2183,64 @@ void scene_10()
     }
    if (mtime()>14900)stop();
 }
->>>>>>> 93bcc593bcbac3f5589910e2de88eb44543c9eb1
+
+void scene_11()
+{
+    int[] time_f={1,3,5};
+    if (time()==0) frame_index=0;
+    int time_n=time_f[frame_index];
+    if (time()>=time_n){frame_index++;frame_index%=time_f.length;time_n=time_f[frame_index];}
+    fill(0);textAlign(LEFT,TOP);
+    Text(font_size,0,0,"Scene_11,frame_"+str(frame_index));  
+    Text(font_size,0,font_size,"time="+str(float(millis()/100)/10)+" s");
+    Text(font_size,0,font_size*2,"L_stime="+str(time())+",L_mtime="+str(mtime()));
+    fill(white);
+    
+    int x1=size_X/2,y1=size_Y/2;
+    int w1 = penguin.width, h1 = penguin.height;
+    penguin_size=0.75;
+    int w0 = int(w1*penguin_size),h0 = int(h1*penguin_size);
+    int x0=size_X-w0,y0=size_Y-h0;
+    int dx=x1-x0,dy=y1-y0,dw=w1-w0,dh=h1-h0;
+    int w,h,x,y;
+    w=h=x=y=0;
+    switch(frame_index)
+    {
+      case 0: x=x0;y=y0;w=w0;h=h0;break;
+      case 1: w = w0+dw*(mtime()-s2ms)/(2*s2ms);h = h0+dh*(mtime()-s2ms)/(2*s2ms);
+              x = x0+dx*(mtime()-s2ms)/(2*s2ms);y = y0+dy*(mtime()-s2ms)/(2*s2ms);break;
+      case 2: w = w1; h = h1; x = x1; y = y1; break;
+    }
+    image(penguin,x,y,w,h);
+    penguin_X=x;penguin_Y=y;
+}
+
+void scene_12()
+{
+    int[] time_f={1,4,7,10,11};
+    if (time()==0) frame_index=0;
+    int time_n=time_f[frame_index];
+    if (time()>=time_n){frame_index++;frame_index%=time_f.length;time_n=time_f[frame_index];}
+    fill(black);textAlign(LEFT,TOP);
+    Text(font_size,0,0,"Scene_0,frame_"+str(frame_index)); 
+    Text(font_size,0,font_size,"time="+str(float(millis()/100)/10)+" s");
+    Text(font_size,0,font_size*2,"L_stime="+str(time())+",L_mtime="+str(mtime()));
+    fill(white);
+
+    penguin_fade(10,1,0,1);
+    image(penguin,(size_X)/2,(size_Y)/2);
+    penguin_X=(size_X)/2;penguin_Y=(size_Y)/2;
+    penguin_size=1;
+    
+    String s1="The introduction to the file system is these";
+    String s2="I hope to have the opportunity to meet you again."; 
+    String s3="So,bye~";
+    switch(frame_index)
+    {
+      case 0:break;
+      case 1:Text_penguin(s1,time_f[frame_index-1],3,1);break;
+      case 2:Text_penguin(s2,time_f[frame_index-1],3,1);break;
+      case 3:Text_penguin(s3,time_f[frame_index-1],3,1);break;
+    }
+   // if (mtime()>900)stop();
+}
