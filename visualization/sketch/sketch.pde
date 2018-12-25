@@ -54,7 +54,7 @@ void Loop()
 {
     switch (scene_index)
     {
-        case 0:  scene_7(); break;
+        case 0:  scene_0(); break;
         case 1:  scene_1(); break;
         case 2:  scene_2(); break;
         case 3:  scene_3(); break;
