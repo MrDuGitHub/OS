@@ -7,3 +7,5 @@
 
 		$ cd the-linux-kernel
 		$ ./run.sh
+		
+See more detail [here](https://github.com/MrDuGitHub/OS/blob/master/report.pdf).
