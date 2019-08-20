@@ -153,11 +153,21 @@ int sys_open(const char * filename,int flag,int mode)
 	if (i>=NR_FILE)
 		return -EINVAL;
 	(current->filp[fd]=f)->f_count++;
-	log("{\"module\":\"file_system\",\"file\":\"open.c\",\"function\":\"sys_open\",\"line\":156,\"provider\":\"Mr.d\",\"time\":%d,\"data\":{\"fd\":%d,\"close_on_exec\":%d,\"file_table\":%d}}\n",jiffies,fd,current->close_on_exec,i);	
+	char name[50];int in=0;
+	name[0]=get_fs_byte(filename);
+	while (get_fs_byte(filename+in)!='\0')
+	{
+		//log("%c",get_fs_byte(filename+in));
+		in++;
+		name[in]=get_fs_byte(filename+in);		
+	}
+	log("{\"module\":\"file_system\",\"file\":\"%s\",\"function\":\"sys_open\",\"line\":%d,\"provider\":\"Mr.d\",\"time\":%d,\n\"data\":{\"name\":\"%s\",\"fd\":%d,\"close_on_exec\":%d,\"file_table\":%d}}\n",__FILE__,__LINE__,jiffies,name,fd,current->close_on_exec,i);	
 /*	log("fd=%d\n",fd);
 	log("close_on_exec=%d\n",current->close_on_exec);
-	log("The first empty file_table is %dth\n",i);
-*/	if ((i=open_namei(filename,flag,mode,&inode))<0) {
+	log("The first empty file_table is %dth\n",i);*/
+	log("{\"module\":\"file_system\",\"file\":\"%s\",\"function\":\"sys_open\",\"line\":%d,\"provider\":\"Mr.d\",\"time\":%d,\n\"data\":{\"Event\":\"open a file\",\"name\":\"%s\"}}\n",__FILE__,__LINE__,jiffies,name);	
+
+	if ((i=open_namei(filename,flag,mode,&inode))<0) {
 		current->filp[fd]=NULL;
 		f->f_count=0;
 		return i;
@@ -185,20 +195,12 @@ int sys_open(const char * filename,int flag,int mode)
 	f->f_count = 1;
 	f->f_inode = inode;
 	f->f_pos = 0;
+		log("{\"module\":\"file_system\",\"file\":\"%s\",\"function\":\"sys_open\",\"line\":%d,\"provider\":\"Mr.d\",\"time\":%d,\n\"data\":{\"Event\":\"open finish\",\"name\":\"%s\",\"f_inode\":%d}}\n",__FILE__,__LINE__,jiffies,name,inode);
 	return (fd);
 }
 
 int sys_creat(const char * pathname, int mode)
 {	
-	//char w[100];
-	/*if (pathname!=NULL)
-	{    
-	    strcpy(w,pathname);
-	    w[100]='\0';
-	    log("sys_creat%s\n",w);
-	}*/
-	//else
-	//  log("NULL!\n");		
 	return sys_open(pathname, O_CREAT | O_TRUNC, mode);
 }
 
